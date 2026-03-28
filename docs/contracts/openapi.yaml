@@ -2419,6 +2419,9 @@ components:
         walkType:
           $ref: '#/components/schemas/WalkType'
         notes:
+          type: string
+          description: Special instructions for the walker
+          example: Please use the harness hanging by the front door.
         status:
           $ref: '#/components/schemas/WalkRequestStatus'
         declineReason:
