@@ -1637,6 +1637,32 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          examples:
+            validationError:
+              summary: Validation error
+              value:
+                code: VALIDATION_ERROR
+                message: One or more fields failed validation.
+                details:
+                  - field: email
+                    issue: Must be a valid email address.
+                  - field: durationMinutes
+                    issue: Must be between 15 and 240.
+            noMatchingRate:
+              summary: No matching rate found
+              value:
+                code: NO_MATCHING_RATE
+                message: No rate found for this walk type, dog count, and duration. Please update the walker's rate card.
+            invalidStateTransition:
+              summary: Invalid state transition
+              value:
+                code: INVALID_STATE_TRANSITION
+                message: This action cannot be performed on a resource in its current status.
+            schedulingConflict:
+              summary: Scheduling conflict
+              value:
+                code: SCHEDULING_CONFLICT
+                message: The walker already has an overlapping walk scheduled for this time.
 
     Unauthorised:
       description: Missing or invalid authentication credentials
@@ -1644,6 +1670,22 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          examples:
+            missingToken:
+              summary: Missing bearer token
+              value:
+                code: AUTHENTICATION_REQUIRED
+                message: A valid bearer token is required to access this resource.
+            invalidCredentials:
+              summary: Invalid login credentials
+              value:
+                code: INVALID_CREDENTIALS
+                message: The email or password provided is incorrect.
+            tokenExpired:
+              summary: Expired token
+              value:
+                code: TOKEN_EXPIRED
+                message: The access token has expired. Please refresh your session.
 
     Forbidden:
       description: Authenticated user does not have permission to perform this action
@@ -1651,6 +1693,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          examples:
+            insufficientRole:
+              summary: Insufficient role
+              value:
+                code: FORBIDDEN
+                message: Your role does not have permission to perform this action.
+            notOwnResource:
+              summary: Not own resource
+              value:
+                code: FORBIDDEN
+                message: You can only access your own records.
 
     NotFound:
       description: The requested resource was not found
@@ -1658,6 +1711,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          examples:
+            resourceNotFound:
+              summary: Resource not found
+              value:
+                code: RESOURCE_NOT_FOUND
+                message: The requested resource could not be found.
 
     Conflict:
       description: The request conflicts with the current state of the resource
@@ -1665,6 +1724,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          examples:
+            duplicateEmail:
+              summary: Duplicate email
+              value:
+                code: DUPLICATE_EMAIL
+                message: A user with this email address already exists.
+            alreadyAccepted:
+              summary: Already accepted
+              value:
+                code: ALREADY_PROCESSED
+                message: This request has already been accepted or declined.
 
   # ---------------------------------------------------------------------------
   # Schemas
@@ -1826,27 +1896,47 @@ components:
 
     Error:
       type: object
+      description: |
+        Standard error envelope returned by all endpoints on failure.
+
+        **Known error codes:**
+        - `VALIDATION_ERROR` – One or more request fields failed validation (see `details`).
+        - `NO_MATCHING_RATE` – No walker rate card entry matches the requested walk type, dog count, and duration.
+        - `SCHEDULING_CONFLICT` – The walker has an overlapping walk already scheduled.
+        - `INVALID_STATE_TRANSITION` – The action is not allowed given the resource's current status.
+        - `AUTHENTICATION_REQUIRED` – No valid bearer token was provided.
+        - `INVALID_CREDENTIALS` – Email or password is incorrect.
+        - `TOKEN_EXPIRED` – The access token has expired.
+        - `FORBIDDEN` – The authenticated user does not have permission.
+        - `RESOURCE_NOT_FOUND` – The requested resource does not exist.
+        - `DUPLICATE_EMAIL` – A user with this email already exists.
+        - `ALREADY_PROCESSED` – The resource has already been accepted or declined.
       required:
         - code
         - message
       properties:
         code:
           type: string
-          description: Machine-readable error code
-          example: RESOURCE_NOT_FOUND
+          description: Machine-readable error code (see list above)
+          example: VALIDATION_ERROR
         message:
           type: string
           description: Human-readable error description
-          example: The requested dog could not be found.
+          example: One or more fields failed validation.
         details:
           type: array
+          description: Optional field-level error details, typically present for validation errors
           items:
             type: object
             properties:
               field:
                 type: string
+                description: The request field that failed validation
+                example: email
               issue:
                 type: string
+                description: What is wrong with the field
+                example: Must be a valid email address.
 
     Pagination:
       type: object
