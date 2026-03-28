@@ -11,6 +11,7 @@ A product specification and OpenAPI contract for the **Stardogwalker** dog walki
 | [Auth Matrix](auth-matrix.md) | Authorisation matrix — which roles can perform which operations |
 | [Sequence Diagrams](sequence-diagrams.md) | Mermaid sequence diagrams for all key interaction flows |
 | [**Interactive API Reference →**](api-reference.html) | Full REST API contract with live try-it-out and multi-language code samples |
+| [**AsyncAPI Event Reference →**](asyncapi-reference.html) | Full domain event catalogue with CloudEvents 1.0 schemas and AMQP channel bindings |
 
 ## Overview
 
@@ -27,6 +28,8 @@ The API covers all aspects of a dog walking service, including:
 - **Recurring Walks** – Owners set up recurring walk schedules; the system generates walk requests automatically
 - **Invoices** – Walkers raise invoices for completed walks; owners can view and pay them
 
-## API Contract
+## API Contracts
 
 The raw OpenAPI 3.0.3 spec is at [`contracts/openapi.yaml`](contracts/openapi.yaml).
+
+The AsyncAPI 2.6.0 event contract is at [`contracts/asyncapi.yaml`](contracts/asyncapi.yaml).

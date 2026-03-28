@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Stardogwalker API Reference</title>
+    <title>Stardogwalker AsyncAPI Event Reference</title>
     <style>
       #docs-nav {
         position: fixed;
@@ -26,15 +26,25 @@
       }
       body { padding-top: 37px; }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@asyncapi/react-component@latest/styles/default.min.css"
+    />
   </head>
   <body>
     <div id="docs-nav">
       <a href="./index.html">&larr; Back to Docs</a>
     </div>
-    <script
-      id="api-reference"
-      data-url="./contracts/openapi.yaml"
-      src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"
-    ></script>
+    <div id="asyncapi"></div>
+    <script src="https://unpkg.com/@asyncapi/react-component@latest/browser/standalone/index.js"></script>
+    <script>
+      AsyncApiStandalone.render(
+        {
+          schema: { url: "./contracts/asyncapi.yaml" },
+          config: { show: { sidebar: true } },
+        },
+        document.getElementById("asyncapi")
+      );
+    </script>
   </body>
 </html>
