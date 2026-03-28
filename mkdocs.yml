@@ -1,0 +1,42 @@
+site_name: Stardogwalker Docs
+site_url: https://datagriff.github.io/dog-walking/
+docs_dir: docs
+repo_url: https://github.com/dataGriff/dog-walking
+repo_name: dataGriff/dog-walking
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - Product Requirements: prd.md
+  - Domain Model: domain-model.md
+  - Auth Matrix: auth-matrix.md
+  - Sequence Diagrams: sequence-diagrams.md
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight
+  - tables
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - https://unpkg.com/mermaid@11/dist/mermaid.min.js
