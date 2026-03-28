@@ -2,10 +2,27 @@ openapi: 3.0.3
 info:
   title: Dog Walking Management API
   description: |
-    A comprehensive API for managing dog walking services. This API supports
-    dog walkers and dog owners, covering client management, walk requests,
-    walk scheduling, dog details, walk updates with images and notes,
-    and invoicing.
+    The Stardogwalker management API — Cardiff, South Wales.
+
+    This API is designed **API-first** to support multiple interaction
+    channels: web app, native mobile app, conversational chat interfaces
+    (e.g. WhatsApp bot), and agentic AI applications. All business logic
+    lives here; no channel-specific logic is embedded in the API.
+
+    **Design principles:**
+    - Stateless — every request authenticates via JWT bearer token
+    - Fine-grained actions — discrete endpoints for each state transition
+      (e.g. `/accept`, `/decline`) to support unambiguous intent from any
+      client type including AI agents
+    - Consistent response envelopes — list responses always include
+      `data[]` and `pagination`; errors always return `code`, `message`,
+      and optional `details`
+    - Versioned — breaking changes will be introduced under `/v2` without
+      removing `/v1` until all clients have migrated
+
+    Covers: interest registration (public), authentication, dog owner and
+    walker management, dog profiles, walk requests, walk scheduling and
+    execution, real-time walk updates, and invoicing.
   version: 1.0.0
   contact:
     name: Dog Walking API Support
@@ -25,6 +42,8 @@ security:
 tags:
   - name: Auth
     description: Authentication and authorisation
+  - name: Interest Requests
+    description: Public interest registration and walker backlog management
   - name: Owners
     description: Dog owner management
   - name: Walkers
@@ -37,10 +56,183 @@ tags:
     description: Walk scheduling and management
   - name: Walk Updates
     description: Walk updates including images and notes
+  - name: Recurring Walks
+    description: Recurring walk schedule management
   - name: Invoices
     description: Invoice management
 
 paths:
+
+  # ---------------------------------------------------------------------------
+  # Interest Requests
+  # ---------------------------------------------------------------------------
+
+  /interest-requests:
+    get:
+      tags:
+        - Interest Requests
+      summary: List interest requests
+      description: |
+        Retrieve a paginated list of interest requests. Accessible by walkers only.
+      operationId: listInterestRequests
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+        - name: status
+          in: query
+          description: Filter interest requests by status
+          schema:
+            $ref: '#/components/schemas/InterestRequestStatus'
+      responses:
+        '200':
+          description: A list of interest requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterestRequestList'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags:
+        - Interest Requests
+      summary: Submit an interest request
+      description: |
+        A prospective client submits their details via the public marketing
+        site. No authentication is required.
+      operationId: createInterestRequest
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterestRequestCreate'
+      responses:
+        '201':
+          description: Interest request received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterestRequestPublic'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /interest-requests/{interestRequestId}:
+    parameters:
+      - $ref: '#/components/parameters/InterestRequestId'
+    get:
+      tags:
+        - Interest Requests
+      summary: Get an interest request
+      description: Retrieve details of a specific interest request.
+      operationId: getInterestRequest
+      responses:
+        '200':
+          description: Interest request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterestRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - Interest Requests
+      summary: Update an interest request
+      description: |
+        Allows the walker to add or update internal notes on an interest
+        request before making a decision.
+      operationId: updateInterestRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterestRequestUpdate'
+      responses:
+        '200':
+          description: Interest request updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterestRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /interest-requests/{interestRequestId}/accept:
+    parameters:
+      - $ref: '#/components/parameters/InterestRequestId'
+    post:
+      tags:
+        - Interest Requests
+      summary: Accept an interest request
+      description: |
+        The walker accepts an interest request. The system automatically
+        creates an Owner profile and User account from the request data and
+        issues an invitation credential to the new client.
+      operationId: acceptInterestRequest
+      responses:
+        '200':
+          description: Interest request accepted; owner account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterestRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /interest-requests/{interestRequestId}/decline:
+    parameters:
+      - $ref: '#/components/parameters/InterestRequestId'
+    post:
+      tags:
+        - Interest Requests
+      summary: Decline an interest request
+      description: The walker declines an interest request.
+      operationId: declineInterestRequest
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterestRequestDecline'
+      responses:
+        '200':
+          description: Interest request declined
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterestRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
   # ---------------------------------------------------------------------------
   # Auth
@@ -146,7 +338,7 @@ paths:
       tags:
         - Owners
       summary: List dog owners
-      description: Retrieve a paginated list of dog owners. Accessible by walkers and admins.
+      description: Retrieve a paginated list of dog owners. Accessible by walkers.
       operationId: listOwners
       parameters:
         - $ref: '#/components/parameters/PageParam'
@@ -762,6 +954,37 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /walks/{walkId}/start:
+    parameters:
+      - $ref: '#/components/parameters/WalkId'
+    post:
+      tags:
+        - Walks
+      summary: Start a walk
+      description: Mark a scheduled walk as started, transitioning it to `in_progress`.
+      operationId: startWalk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalkStart'
+      responses:
+        '200':
+          description: Walk started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Walk'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /walks/{walkId}/complete:
     parameters:
       - $ref: '#/components/parameters/WalkId'
@@ -922,6 +1145,185 @@ paths:
           $ref: '#/components/responses/NotFound'
 
   # ---------------------------------------------------------------------------
+  # Recurring Walks
+  # ---------------------------------------------------------------------------
+
+  /recurring-walks:
+    get:
+      tags:
+        - Recurring Walks
+      summary: List recurring walks
+      description: Retrieve all recurring walk schedules for the authenticated owner, or all schedules for the walker.
+      operationId: listRecurringWalks
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+        - name: status
+          in: query
+          description: Filter by recurring walk status
+          schema:
+            $ref: '#/components/schemas/RecurringWalkStatus'
+      responses:
+        '200':
+          description: A list of recurring walks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringWalkList'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+
+    post:
+      tags:
+        - Recurring Walks
+      summary: Create a recurring walk
+      description: Set up a recurring walk schedule. Generates WalkRequests automatically on each occurrence.
+      operationId: createRecurringWalk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecurringWalkCreate'
+      responses:
+        '201':
+          description: Recurring walk created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringWalk'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+
+  /recurring-walks/{recurringWalkId}:
+    parameters:
+      - $ref: '#/components/parameters/RecurringWalkId'
+    get:
+      tags:
+        - Recurring Walks
+      summary: Get a recurring walk
+      description: Retrieve details of a specific recurring walk schedule.
+      operationId: getRecurringWalk
+      responses:
+        '200':
+          description: Recurring walk details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringWalk'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - Recurring Walks
+      summary: Update a recurring walk
+      description: Update the schedule details of an active recurring walk.
+      operationId: updateRecurringWalk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecurringWalkCreate'
+      responses:
+        '200':
+          description: Recurring walk updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringWalk'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /recurring-walks/{recurringWalkId}/pause:
+    parameters:
+      - $ref: '#/components/parameters/RecurringWalkId'
+    post:
+      tags:
+        - Recurring Walks
+      summary: Pause a recurring walk
+      description: Pause an active recurring walk. No new WalkRequests are generated while paused.
+      operationId: pauseRecurringWalk
+      responses:
+        '200':
+          description: Recurring walk paused
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringWalk'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /recurring-walks/{recurringWalkId}/resume:
+    parameters:
+      - $ref: '#/components/parameters/RecurringWalkId'
+    post:
+      tags:
+        - Recurring Walks
+      summary: Resume a recurring walk
+      description: Resume a paused recurring walk. Request generation resumes from the next scheduled occurrence.
+      operationId: resumeRecurringWalk
+      responses:
+        '200':
+          description: Recurring walk resumed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringWalk'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /recurring-walks/{recurringWalkId}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/RecurringWalkId'
+    post:
+      tags:
+        - Recurring Walks
+      summary: Cancel a recurring walk
+      description: Permanently cancel a recurring walk. Stops all future generation of WalkRequests. Any pending generated requests are cancelled automatically.
+      operationId: cancelRecurringWalk
+      responses:
+        '200':
+          description: Recurring walk cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringWalk'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------------
   # Invoices
   # ---------------------------------------------------------------------------
 
@@ -1041,6 +1443,31 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /invoices/{invoiceId}/send:
+    parameters:
+      - $ref: '#/components/parameters/InvoiceId'
+    post:
+      tags:
+        - Invoices
+      summary: Send an invoice
+      description: Transition a draft invoice to `sent`, making it visible to the owner.
+      operationId: sendInvoice
+      responses:
+        '200':
+          description: Invoice sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /invoices/{invoiceId}/pay:
     parameters:
       - $ref: '#/components/parameters/InvoiceId'
@@ -1091,6 +1518,15 @@ components:
   # ---------------------------------------------------------------------------
 
   parameters:
+
+    InterestRequestId:
+      name: interestRequestId
+      in: path
+      required: true
+      description: Unique identifier of the interest request
+      schema:
+        type: string
+        format: uuid
 
     OwnerId:
       name: ownerId
@@ -1151,6 +1587,15 @@ components:
       in: path
       required: true
       description: Unique identifier of the invoice
+      schema:
+        type: string
+        format: uuid
+
+    RecurringWalkId:
+      name: recurringWalkId
+      in: path
+      required: true
+      description: Unique identifier of the recurring walk
       schema:
         type: string
         format: uuid
@@ -1220,6 +1665,156 @@ components:
   # ---------------------------------------------------------------------------
 
   schemas:
+
+    # --- Interest Requests ----------------------------------------------------
+
+    InterestRequestStatus:
+      type: string
+      enum:
+        - pending
+        - accepted
+        - declined
+      example: pending
+
+    InterestRequestCreate:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - phone
+        - postcode
+        - dogDescription
+      properties:
+        firstName:
+          type: string
+          example: Sarah
+        lastName:
+          type: string
+          example: Davies
+        email:
+          type: string
+          format: email
+          example: sarah.davies@example.com
+        phone:
+          type: string
+          example: +44 7700 900789
+        postcode:
+          type: string
+          description: Must be within the Cardiff / South Wales service area
+          example: CF10 1AB
+        dogDescription:
+          type: string
+          description: Brief description of the prospective client's dog(s)
+          example: I have a 2-year-old Golden Retriever called Buddy. Very friendly, no medical issues.
+
+    InterestRequestPublic:
+      type: object
+      description: Confirmation returned to the prospective client after submission
+      required:
+        - id
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: aabb1122-ccdd-3344-eeff-556677889900
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-03-28T10:00:00Z'
+
+    InterestRequestUpdate:
+      type: object
+      properties:
+        notes:
+          type: string
+          description: Internal walker notes (not visible to the prospective client)
+          example: Spoke to Sarah on the phone. Buddy sounds like a great fit.
+
+    InterestRequestDecline:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Reason for declining the interest request
+          example: We are not currently covering the CF5 area.
+
+    InterestRequest:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - phone
+        - postcode
+        - dogDescription
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: aabb1122-ccdd-3344-eeff-556677889900
+        firstName:
+          type: string
+          example: Sarah
+        lastName:
+          type: string
+          example: Davies
+        email:
+          type: string
+          format: email
+          example: sarah.davies@example.com
+        phone:
+          type: string
+          example: +44 7700 900789
+        postcode:
+          type: string
+          example: CF10 1AB
+        dogDescription:
+          type: string
+          example: I have a 2-year-old Golden Retriever called Buddy.
+        status:
+          $ref: '#/components/schemas/InterestRequestStatus'
+        declineReason:
+          type: string
+          nullable: true
+          example: null
+        notes:
+          type: string
+          nullable: true
+          description: Internal walker notes; not returned to unauthenticated callers
+          example: Spoke to Sarah on the phone.
+        ownerId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Set when the interest request is accepted and an owner account is created
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-03-28T10:00:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-03-28T10:00:00Z'
+
+    InterestRequestList:
+      type: object
+      required:
+        - data
+        - pagination
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestRequest'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
 
     # --- Shared ---------------------------------------------------------------
 
@@ -1489,11 +2084,14 @@ components:
           type: string
           description: Short biography or description of the walker
           example: Experienced dog walker with 5 years looking after all breeds.
-        ratePerHour:
-          type: number
-          format: float
-          description: Hourly rate charged by the walker (in GBP)
-          example: 15.00
+        walkRates:
+          type: array
+          description: |
+            Rate card for this walker. The rate applied to a walk is determined
+            by matching walkType, numberOfDogs, and durationMinutes against
+            this list.
+          items:
+            $ref: '#/components/schemas/WalkRate'
 
     Walker:
       allOf:
@@ -1655,6 +2253,45 @@ components:
         - cancelled
       example: pending
 
+    WalkType:
+      type: string
+      enum:
+        - solo_walk
+        - group_walk
+        - adventure_walk
+        - puppy_walk
+      description: |
+        The format of the walk. Together with the number of dogs and duration,
+        this determines which rate from the walker's rate card applies.
+      example: solo_walk
+
+    WalkRate:
+      type: object
+      required:
+        - walkType
+        - numberOfDogs
+        - durationMinutes
+        - ratePerHour
+      properties:
+        walkType:
+          $ref: '#/components/schemas/WalkType'
+        numberOfDogs:
+          type: integer
+          minimum: 1
+          description: Number of dogs this rate entry applies to
+          example: 1
+        durationMinutes:
+          type: integer
+          minimum: 15
+          maximum: 240
+          description: Walk duration (in minutes) this rate entry applies to
+          example: 60
+        ratePerHour:
+          type: number
+          format: float
+          description: Hourly rate in GBP for this walkType/numberOfDogs/durationMinutes combination
+          example: 18.00
+
     WalkRequestCreate:
       type: object
       required:
@@ -1696,6 +2333,8 @@ components:
           maximum: 240
           description: Requested walk duration in minutes
           example: 60
+        walkType:
+          $ref: '#/components/schemas/WalkType'
         notes:
           type: string
           description: Special instructions for the walker
@@ -1741,6 +2380,7 @@ components:
         - requestedDate
         - requestedStartTime
         - durationMinutes
+        - walkType
         - status
         - createdAt
         - updatedAt
@@ -1776,10 +2416,9 @@ components:
         durationMinutes:
           type: integer
           example: 60
+        walkType:
+          $ref: '#/components/schemas/WalkType'
         notes:
-          type: string
-          nullable: true
-          example: Please use the harness hanging by the front door.
         status:
           $ref: '#/components/schemas/WalkRequestStatus'
         declineReason:
@@ -1846,6 +2485,17 @@ components:
           description: Notes about the planned walking route
           example: Use the river path today.
 
+    WalkStart:
+      type: object
+      required:
+        - actualStartTime
+      properties:
+        actualStartTime:
+          type: string
+          format: date-time
+          description: The actual time the walk started
+          example: '2025-04-10T09:01:00Z'
+
     WalkComplete:
       type: object
       properties:
@@ -1886,6 +2536,8 @@ components:
         - scheduledDate
         - scheduledStartTime
         - durationMinutes
+        - walkType
+        - agreedRate
         - status
         - createdAt
         - updatedAt
@@ -1924,6 +2576,16 @@ components:
         durationMinutes:
           type: integer
           example: 60
+        walkType:
+          $ref: '#/components/schemas/WalkType'
+        agreedRate:
+          type: number
+          format: float
+          description: |
+            Hourly rate in GBP resolved from the walker's rate card at the time
+            the walk request was accepted, based on walkType, number of dogs,
+            and durationMinutes.
+          example: 18.00
         status:
           $ref: '#/components/schemas/WalkStatus'
         routeNotes:
@@ -2097,6 +2759,160 @@ components:
           readOnly: true
           description: Calculated line total (quantity × unitPrice)
           example: 15.00
+
+    RecurringWalkStatus:
+      type: string
+      enum:
+        - active
+        - paused
+        - cancelled
+      example: active
+
+    RecurringWalkFrequency:
+      type: string
+      enum:
+        - weekly
+        - fortnightly
+      example: weekly
+
+    RecurrenceSchedule:
+      type: object
+      required:
+        - frequency
+        - dayOfWeek
+        - startTime
+      properties:
+        frequency:
+          $ref: '#/components/schemas/RecurringWalkFrequency'
+        dayOfWeek:
+          type: string
+          enum:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
+          example: monday
+        startTime:
+          type: string
+          format: time
+          description: Walk start time in RFC 3339 HH:MM:SS format
+          example: '09:00:00'
+
+    RecurringWalkCreate:
+      type: object
+      required:
+        - ownerId
+        - dogIds
+        - walkType
+        - durationMinutes
+        - recurrence
+        - startDate
+      properties:
+        ownerId:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        dogIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+          example:
+            - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        walkType:
+          $ref: '#/components/schemas/WalkType'
+        durationMinutes:
+          type: integer
+          minimum: 15
+          maximum: 240
+          example: 60
+        recurrence:
+          $ref: '#/components/schemas/RecurrenceSchedule'
+        startDate:
+          type: string
+          format: date
+          description: Date of the first generated WalkRequest
+          example: '2025-05-05'
+        endDate:
+          type: string
+          format: date
+          description: Date after which no more WalkRequests are generated; omit for indefinite
+          example: '2025-12-31'
+        notes:
+          type: string
+          description: Standing instructions for every walk in the schedule
+          example: Please use the side gate.
+
+    RecurringWalk:
+      type: object
+      required:
+        - id
+        - ownerId
+        - dogIds
+        - walkType
+        - durationMinutes
+        - recurrence
+        - startDate
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: c9d0e1f2-a3b4-5678-cdef-012345678901
+        ownerId:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        dogIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+        walkType:
+          $ref: '#/components/schemas/WalkType'
+        durationMinutes:
+          type: integer
+          example: 60
+        recurrence:
+          $ref: '#/components/schemas/RecurrenceSchedule'
+        startDate:
+          type: string
+          format: date
+          example: '2025-05-05'
+        endDate:
+          type: string
+          format: date
+          example: '2025-12-31'
+        notes:
+          type: string
+          example: Please use the side gate.
+        status:
+          $ref: '#/components/schemas/RecurringWalkStatus'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-04-01T10:00:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-04-01T10:00:00Z'
+
+    RecurringWalkList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurringWalk'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
 
     InvoiceRequest:
       type: object

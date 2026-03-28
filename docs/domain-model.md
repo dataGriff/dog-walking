@@ -1,7 +1,7 @@
-# Dog Walking Management – Domain Model
+# Stardogwalker – Domain Model
 
 This document describes the core entities, their attributes, relationships,
-and the business rules that govern the dog walking management domain.
+and the business rules that govern the Stardogwalker domain.
 
 ---
 
@@ -20,6 +20,12 @@ Represents a registered user of the platform. A user has one of two roles:
 | firstName   | string | ✓        |                                |
 | lastName    | string | ✓        |                                |
 | role        | enum   | ✓        | `owner` or `walker`            |
+
+> **Note on profile data:** `User` holds authentication credentials only.
+> `Owner` and `Walker` profiles are the canonical source for display data
+> (name, phone, address). `User.email` and `Owner.email` / `Walker.email`
+> should match and be kept in sync; the profile email is used for
+> communication while the User email is used for login.
 
 ---
 
@@ -55,9 +61,9 @@ with a **User** account.
 | email       | string  | ✓        |                                    |
 | phone       | string  | ✓        |                                    |
 | address     | Address | ✗        | Embedded value object              |
-| bio         | string  | ✗        | Short biography for owners to read |
-| ratePerHour | decimal | ✗        | Hourly rate in GBP                 |
-| createdAt   | datetime| ✓        | System-assigned                    |
+| bio         | string     | ✗        | Short biography for owners to read                |
+| walkRates   | WalkRate[] | ✗        | Rate card; see **WalkRate** value object below    |
+| createdAt   | datetime   | ✓        | System-assigned                                   |
 | updatedAt   | datetime| ✓        | System-assigned                    |
 
 ---
@@ -100,6 +106,7 @@ optionally nominate a preferred **Walker**.
 | requestedDate     | date     | ✓        |                                              |
 | requestedStartTime| time     | ✓        | RFC 3339 time (`HH:MM:SS`)                   |
 | durationMinutes   | integer  | ✓        | 15–240 minutes                               |
+| walkType          | enum     | ✓        | See **WalkType** enum below                  |
 | notes             | string   | ✗        | Special instructions for the walker          |
 | status            | enum     | ✓        | See **WalkRequest status lifecycle** below   |
 | declineReason     | string   | ✗        | Populated when status = `declined`           |
@@ -135,6 +142,8 @@ one **Walker**, and one or more **Dogs**.
 | scheduledDate      | date     | ✓        |                                         |
 | scheduledStartTime | time     | ✓        | RFC 3339 time (`HH:MM:SS`)             |
 | durationMinutes    | integer  | ✓        |                                         |
+| walkType           | enum     | ✓        | Copied from the originating WalkRequest |
+| agreedRate         | decimal  | ✓        | Rate in GBP resolved from walker's WalkRate card |
 | status             | enum     | ✓        | See **Walk status lifecycle** below     |
 | routeNotes         | string   | ✗        | Planned route description               |
 | actualStartTime    | datetime | ✗        | Populated on completion                 |
@@ -228,6 +237,109 @@ An individual line on an **Invoice**, representing one completed walk.
 
 Value objects are embedded within entities and have no independent identity.
 
+### WalkType
+
+An enumeration of the available walk formats offered by the platform.
+
+| Value            | Description                                             |
+|------------------|---------------------------------------------------------|
+| `solo_walk`      | One-on-one walk with a single dog                       |
+| `group_walk`     | Walk shared with dogs from other owners                 |
+| `adventure_walk` | Extended off-lead walk in parks or countryside          |
+| `puppy_walk`     | Short, structured walk designed for young dogs          |
+
+---
+
+### InterestRequest
+
+A public enquiry submitted by a prospective client before they have an
+account. Managed by the walker as a backlog. Accepted requests automatically
+create a **User** and **Owner** profile.
+
+| Attribute      | Type     | Required | Notes                                                    |
+|----------------|----------|----------|----------------------------------------------------------|
+| id             | UUID     | ✓        | System-assigned                                          |
+| firstName      | string   | ✓        |                                                          |
+| lastName       | string   | ✓        |                                                          |
+| email          | string   | ✓        | Must be unique across existing User records              |
+| phone          | string   | ✓        |                                                          |
+| postcode       | string   | ✓        | Must be within the Cardiff / South Wales service area    |
+| dogDescription | string   | ✓        | Free-text description of the dog(s)                      |
+| notes          | string   | ✗        | Internal walker notes; never visible to the prospect     |
+| status         | enum     | ✓        | See **InterestRequest status lifecycle** below           |
+| declineReason  | string   | ✗        | Populated when status = `declined`                       |
+| ownerId        | UUID     | ✗        | FK → Owner; set when status transitions to `accepted`    |
+| createdAt      | datetime | ✓        | System-assigned                                          |
+| updatedAt      | datetime | ✓        | System-assigned                                          |
+
+#### InterestRequest status lifecycle
+
+```
+pending ──► accepted (Owner account created)
+        │
+        └──► declined
+```
+
+---
+
+### RecurringWalk
+
+A recurring walk schedule set up by an **Owner**. The system generates a new
+**WalkRequest** automatically on each scheduled occurrence. The walker accepts
+or declines each generated request through the standard walk booking flow.
+
+| Attribute          | Type              | Required | Notes                                                        |
+|--------------------|-------------------|----------|--------------------------------------------------------------|
+| id                 | UUID              | ✓        | System-assigned                                              |
+| ownerId            | UUID              | ✓        | FK → Owner                                                   |
+| dogIds             | UUID[]            | ✓        | FK[] → Dog; same dogs walked on every occurrence             |
+| walkType           | enum              | ✓        | See **WalkType** enum                                        |
+| durationMinutes    | integer           | ✓        | 15–240 minutes                                               |
+| recurrence         | RecurrenceSchedule| ✓        | See **RecurrenceSchedule** value object below                |
+| startDate          | date              | ✓        | Date of the first generated WalkRequest                      |
+| endDate            | date              | ✗        | If omitted, schedule continues until paused or cancelled     |
+| notes              | string            | ✗        | Standing instructions for every walk in this schedule        |
+| status             | enum              | ✓        | See **RecurringWalk status lifecycle** below                 |
+| createdAt          | datetime          | ✓        | System-assigned                                              |
+| updatedAt          | datetime          | ✓        | System-assigned                                              |
+
+#### RecurringWalk status lifecycle
+
+```
+active ──► paused ──► active
+       │
+       └──► cancelled
+```
+
+---
+
+### WalkRate
+
+A single pricing entry in a walker's rate card. The applicable rate for a
+walk is determined by matching the walk's **walkType**, the **number of dogs**,
+and the **durationMinutes** to an entry in the walker's `walkRates` list.
+
+| Attribute       | Type    | Required | Notes                                              |
+|-----------------|---------|----------|----------------------------------------------------||
+| walkType        | enum    | ✓        | The walk format this rate applies to               |
+| numberOfDogs    | integer | ✓        | Number of dogs this rate applies to (≥ 1)          |
+| durationMinutes | integer | ✓        | Walk duration this rate applies to (15–240 min)    |
+| ratePerHour     | decimal | ✓        | Hourly rate in GBP for this combination            |
+
+---
+
+### RecurrenceSchedule
+
+Embedded in **RecurringWalk**. Defines the cadence of walk generation.
+
+| Attribute   | Type    | Required | Notes                                                             |
+|-------------|---------|----------|-------------------------------------------------------------------|
+| frequency   | enum    | ✓        | `weekly` or `fortnightly`                                         |
+| dayOfWeek   | enum    | ✓        | `monday` … `sunday`                                               |
+| startTime   | time    | ✓        | RFC 3339 time (`HH:MM:SS`); applied to every generated request    |
+
+---
+
 ### Address
 
 Used by **Owner** and **Walker** (and **VetContact**).
@@ -265,6 +377,12 @@ Embedded in **Dog**.
 ## Entity Relationship Diagram
 
 ```
+┌──────────────────────┐
+│  InterestRequest      │
+│  (public / no auth)   │
+└──────────┬───────────┘
+           │ accepted (auto-creates)
+           ▼
 ┌──────────┐          ┌──────────┐
 │   User   │          │   User   │
 │ (owner)  │          │ (walker) │
@@ -282,6 +400,11 @@ Embedded in **Dog**.
      │    (preferred        │
      │     walker, opt.)    │
      │                     │
+     │  (generates)         │
+     │ 1                   │
+  ┌──┴────────────┐         │
+  │ RecurringWalk │         │
+  └──────────────-┘         │
      │ 1                   │
      ▼ *                   │
 ┌──────────┐               │
@@ -310,14 +433,16 @@ Owner ──── 1 ──► * ──── Invoice ──── * ──► 1
 
 ## Aggregate Boundaries
 
-| Aggregate Root | Contains                        |
-|----------------|---------------------------------|
-| Owner          | Owner profile, Address          |
-| Walker         | Walker profile, Address         |
-| Dog            | Dog details, Vaccination[], VetContact |
-| WalkRequest    | Request details and status      |
-| Walk           | Walk schedule, status, WalkUpdate[] |
-| Invoice        | Invoice header, InvoiceLineItem[] |
+| Aggregate Root  | Contains                                              |
+|-----------------|-------------------------------------------------------|
+| InterestRequest | Interest enquiry and internal notes                   |
+| Owner           | Owner profile, Address                                |
+| Walker          | Walker profile, Address, WalkRate[]                   |
+| Dog             | Dog details, Vaccination[], VetContact                |
+| WalkRequest     | Request details and status                            |
+| RecurringWalk   | Recurring schedule, RecurrenceSchedule                |
+| Walk            | Walk schedule, status, WalkUpdate[]                   |
+| Invoice         | Invoice header, InvoiceLineItem[]                     |
 
 ---
 
@@ -331,3 +456,11 @@ Owner ──── 1 ──► * ──── Invoice ──── * ──► 1
 6. **Preferred walker** – An owner may nominate a preferred walker on a `WalkRequest`, but any available walker may accept an open request.
 7. **Walk duration limits** – Walk duration must be between 15 and 240 minutes.
 8. **Password policy** – Passwords must be at least 8 characters.
+9. **Rate resolution** – When a walker accepts a `WalkRequest`, the system resolves the `agreedRate` by finding the walker's `WalkRate` entry that exactly matches the request's `walkType`, the number of dogs in `dogIds`, and the `durationMinutes`. All three dimensions must match; if no entry is found the acceptance is rejected with a pricing error.
+10. **Walk type required** – Every `WalkRequest` must specify a `walkType` at submission time. Rate resolution against that walk type (see rule 9) is performed only at acceptance time, not at submission time.
+11. **Interest request is unauthenticated** – `InterestRequest` submission requires no account. The email provided must be unique across existing `User` records to prevent duplicate accounts.
+12. **Account creation on acceptance** – When a walker accepts an `InterestRequest`, the system atomically creates a `User` record and an `Owner` profile populated from the interest request data (firstName, lastName, email, phone). A system-generated invitation credential is issued to the new user. The `InterestRequest.ownerId` is set to the new Owner's id.
+13. **Interest postcode validation** – The postcode submitted in an `InterestRequest` should fall within the Cardiff / South Wales service area. Requests outside the service area may be declined by the walker.
+14. **Recurring walk request generation** – When a `RecurringWalk` is `active`, the system generates a `WalkRequest` for each upcoming occurrence based on the `RecurrenceSchedule`. Generated requests enter the standard booking flow (pending → accepted/declined). If a generated request is declined, the `RecurringWalk` continues and the next occurrence is still generated.
+15. **Recurring walk cancellation** – Cancelling a `RecurringWalk` stops future request generation. Any already-generated `WalkRequest` records in `pending` status are cancelled automatically. Accepted walks are not affected.
+16. **Walk start required before updates** – `WalkUpdate` records may only be posted once a walk's status is `in_progress`. The walker must start the walk (transition to `in_progress`) before posting photos or notes.
