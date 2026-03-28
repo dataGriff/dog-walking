@@ -111,6 +111,7 @@ optionally nominate a preferred **Walker**.
 | status            | enum     | ✓        | See **WalkRequest status lifecycle** below   |
 | declineReason     | string   | ✗        | Populated when status = `declined`           |
 | walkId            | UUID     | ✗        | FK → Walk; set when request is accepted      |
+| recurringWalkId   | UUID     | ✗        | FK → RecurringWalk; set when generated from a recurring schedule |
 | createdAt         | datetime | ✓        | System-assigned                              |
 | updatedAt         | datetime | ✓        | System-assigned                              |
 
@@ -143,10 +144,10 @@ one **Walker**, and one or more **Dogs**.
 | scheduledStartTime | time     | ✓        | RFC 3339 time (`HH:MM:SS`)             |
 | durationMinutes    | integer  | ✓        |                                         |
 | walkType           | enum     | ✓        | Copied from the originating WalkRequest |
-| agreedRate         | decimal  | ✓        | Rate in GBP resolved from walker's WalkRate card |
+| agreedRate         | decimal  | ✓        | Hourly rate in GBP resolved from walker's WalkRate card; total walk cost is derived at invoicing time |
 | status             | enum     | ✓        | See **Walk status lifecycle** below     |
 | routeNotes         | string   | ✗        | Planned route description               |
-| actualStartTime    | datetime | ✗        | Populated on completion                 |
+| actualStartTime    | datetime | ✗        | Populated when walk is started              |
 | actualEndTime      | datetime | ✗        | Populated on completion                 |
 | distanceKm         | decimal  | ✗        | Populated on completion                 |
 | summaryNotes       | string   | ✗        | Walker's post-walk summary              |
@@ -233,7 +234,7 @@ An individual line on an **Invoice**, representing one completed walk.
 
 ---
 
-## Value Objects
+### InterestRequest
 
 Value objects are embedded within entities and have no independent identity.
 
@@ -249,8 +250,6 @@ An enumeration of the available walk formats offered by the platform.
 | `puppy_walk`     | Short, structured walk designed for young dogs          |
 
 ---
-
-### InterestRequest
 
 A public enquiry submitted by a prospective client before they have an
 account. Managed by the walker as a backlog. Accepted requests automatically
@@ -296,6 +295,7 @@ or declines each generated request through the standard walk booking flow.
 | walkType           | enum              | ✓        | See **WalkType** enum                                        |
 | durationMinutes    | integer           | ✓        | 15–240 minutes                                               |
 | recurrence         | RecurrenceSchedule| ✓        | See **RecurrenceSchedule** value object below                |
+| preferredWalkerId  | UUID              | ✗        | FK → Walker; optional preferred walker for every generated request |
 | startDate          | date              | ✓        | Date of the first generated WalkRequest                      |
 | endDate            | date              | ✗        | If omitted, schedule continues until paused or cancelled     |
 | notes              | string            | ✗        | Standing instructions for every walk in this schedule        |
@@ -320,7 +320,7 @@ walk is determined by matching the walk's **walkType**, the **number of dogs**,
 and the **durationMinutes** to an entry in the walker's `walkRates` list.
 
 | Attribute       | Type    | Required | Notes                                              |
-|-----------------|---------|----------|----------------------------------------------------||
+|-----------------|---------|----------|----------------------------------------------------|
 | walkType        | enum    | ✓        | The walk format this rate applies to               |
 | numberOfDogs    | integer | ✓        | Number of dogs this rate applies to (≥ 1)          |
 | durationMinutes | integer | ✓        | Walk duration this rate applies to (15–240 min)    |
@@ -464,3 +464,18 @@ Owner ──── 1 ──► * ──── Invoice ──── * ──► 1
 14. **Recurring walk request generation** – When a `RecurringWalk` is `active`, the system generates a `WalkRequest` for each upcoming occurrence based on the `RecurrenceSchedule`. Generated requests enter the standard booking flow (pending → accepted/declined). If a generated request is declined, the `RecurringWalk` continues and the next occurrence is still generated.
 15. **Recurring walk cancellation** – Cancelling a `RecurringWalk` stops future request generation. Any already-generated `WalkRequest` records in `pending` status are cancelled automatically. Accepted walks are not affected.
 16. **Walk start required before updates** – `WalkUpdate` records may only be posted once a walk's status is `in_progress`. The walker must start the walk (transition to `in_progress`) before posting photos or notes.
+17. **Scheduling conflict detection** – When a walker accepts a `WalkRequest`, the system checks for overlapping walks already assigned to that walker on the same date. Two walks overlap if their time windows (scheduledStartTime to scheduledStartTime + durationMinutes) intersect. If a conflict is detected, the acceptance is rejected with a scheduling error. This ensures the PRD goal of zero scheduling conflicts.
+18. **Overdue invoice auto-flagging** – An invoice in `sent` status whose `dueDate` has passed is automatically transitioned to `overdue`. This may be implemented as a background scheduler or evaluated on read. Once an overdue invoice is paid, it transitions directly to `paid`.
+19. **Preferred walker on recurring walks** – A `RecurringWalk` may specify a `preferredWalkerId`. When the system generates `WalkRequest` records from the schedule, the preferred walker is carried forward to each generated request.
+20. **Recurring walk request linkage** – Generated `WalkRequest` records include a `recurringWalkId` linking them back to the originating `RecurringWalk`. This is required for pause and cancel operations to identify and cancel pending generated requests.
+
+---
+
+## Implementation Notes
+
+The following areas are intentionally **out of scope** for V1 of the domain model but are acknowledged as future requirements from the PRD:
+
+- **Online payment processing** – The `POST /invoices/{id}/pay` endpoint records that a payment has occurred (method, reference, timestamp) but does not initiate a payment flow with an external provider (e.g. Stripe). Online payment integration is deferred to a future iteration.
+- **Notification / event model** – The PRD requires that owners are notified on key state transitions (request accepted/declined, walk started/completed, invoice sent). The mechanism (email, push, webhook) and the event catalogue are not defined here. A lightweight notification entity or event bus specification should be added before implementing notifications.
+- **Marketing site content** – The PRD requires a public-facing marketing site. Content for this site is managed outside the API; the API provides only the interest request submission endpoint as the integration point.
+- **Audit trail** – With multiple interaction channels (web, mobile, chat, agentic AI), an audit log recording which user and channel performed each state transition is recommended but not yet modelled.

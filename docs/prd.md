@@ -124,6 +124,7 @@ The product must provide the following capabilities.
 
 - The walker can mark a walk as started and as completed, recording end time, distance, and summary notes
 - The walker can cancel a scheduled walk with a reason
+- Dog owners can cancel a scheduled walk before it has started
 - The walker can post photo and text updates during a walk
 - Dog owners can view updates and the walk summary at any time
 

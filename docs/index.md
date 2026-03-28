@@ -17,12 +17,14 @@ A product specification and OpenAPI contract for the **Stardogwalker** dog walki
 The API covers all aspects of a dog walking service, including:
 
 - **Authentication** – Register, log in, refresh tokens, and log out (JWT-based)
+- **Interest Requests** – Public interest registration form and walker backlog management
 - **Dog Owners** – Full CRUD management of dog owner profiles
 - **Dog Walkers** – Full CRUD management of dog walker profiles
 - **Dogs** – Full CRUD management of dog details, including medical and vaccination records, nested under their owner
 - **Walk Requests** – Owners submit walk requests; walkers accept or decline them
 - **Walks** – Scheduled walks created from accepted requests; walkers can start, complete, or cancel walks
 - **Walk Updates** – Walkers post real-time notes and images during a walk, keeping owners engaged
+- **Recurring Walks** – Owners set up recurring walk schedules; the system generates walk requests automatically
 - **Invoices** – Walkers raise invoices for completed walks; owners can view and pay them
 
 ## API Contract

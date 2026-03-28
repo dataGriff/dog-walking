@@ -572,6 +572,9 @@ paths:
       summary: List dogs for an owner
       description: Retrieve all dogs belonging to a specific owner.
       operationId: listDogs
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
       responses:
         '200':
           description: A list of dogs
@@ -937,7 +940,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WalkUpdate'
+              $ref: '#/components/schemas/WalkEdit'
       responses:
         '200':
           description: Walk updated
@@ -1060,6 +1063,9 @@ paths:
       summary: List walk updates
       description: Retrieve all updates (notes and images) posted during a walk.
       operationId: listWalkUpdates
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
       responses:
         '200':
           description: A list of walk updates
@@ -2206,11 +2212,14 @@ components:
       type: object
       required:
         - data
+        - pagination
       properties:
         data:
           type: array
           items:
             $ref: '#/components/schemas/Dog'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
 
     Vaccination:
       type: object
@@ -2300,6 +2309,7 @@ components:
         - requestedDate
         - requestedStartTime
         - durationMinutes
+        - walkType
       properties:
         ownerId:
           type: string
@@ -2438,6 +2448,12 @@ components:
           type: string
           format: date-time
           example: '2025-04-01T14:00:00Z'
+        recurringWalkId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Set when this request was generated from a recurring walk schedule
+          example: null
         updatedAt:
           type: string
           format: date-time
@@ -2467,7 +2483,7 @@ components:
         - cancelled
       example: scheduled
 
-    WalkUpdate:
+    WalkEdit:
       type: object
       properties:
         scheduledDate:
@@ -2585,9 +2601,10 @@ components:
           type: number
           format: float
           description: |
-            Hourly rate in GBP resolved from the walker's rate card at the time
-            the walk request was accepted, based on walkType, number of dogs,
-            and durationMinutes.
+            Hourly rate in GBP (matching `WalkRate.ratePerHour`) resolved from
+            the walker's rate card at the time the walk request was accepted,
+            based on walkType, number of dogs, and durationMinutes. The total
+            walk cost is derived at invoicing time (quantity × unitPrice).
           example: 18.00
         status:
           $ref: '#/components/schemas/WalkStatus'
@@ -2712,11 +2729,14 @@ components:
       type: object
       required:
         - data
+        - pagination
       properties:
         data:
           type: array
           items:
             $ref: '#/components/schemas/WalkUpdateItem'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
 
     # --- Invoices -------------------------------------------------------------
 
@@ -2835,6 +2855,11 @@ components:
           example: 60
         recurrence:
           $ref: '#/components/schemas/RecurrenceSchedule'
+        preferredWalkerId:
+          type: string
+          format: uuid
+          description: Optional preferred walker for every generated WalkRequest
+          example: 7b1e4d2a-1234-5678-abcd-ef0123456789
         startDate:
           type: string
           format: date
@@ -2896,6 +2921,12 @@ components:
         notes:
           type: string
           example: Please use the side gate.
+        preferredWalkerId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Preferred walker for every generated WalkRequest
+          example: 7b1e4d2a-1234-5678-abcd-ef0123456789
         status:
           $ref: '#/components/schemas/RecurringWalkStatus'
         createdAt:
@@ -2979,6 +3010,8 @@ components:
         - walkerId
         - lineItems
         - subtotal
+        - taxRate
+        - taxAmount
         - total
         - dueDate
         - status

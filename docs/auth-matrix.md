@@ -50,10 +50,10 @@ are defined in `openapi.yaml`.
 
 | Operation       | Public | Owner | Walker |
 |-----------------|--------|-------|--------|
-| Register        | ✓      | ✓     | ✓      |
-| Log in          | ✓      | ✓     | ✓      |
+| Register        | `public`| ✗    | ✗      |
+| Log in          | `public`| `public`| `public`|
 | Log out         | ✗      | ✓     | ✓      |
-| Refresh session | ✓      | ✓     | ✓      |
+| Refresh session | `public`| `public`| `public`|
 
 ---
 
