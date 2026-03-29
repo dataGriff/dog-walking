@@ -177,6 +177,19 @@ Authorization: Bearer {{walkerToken}}
 GET {{baseUrl}}/walkers/{{walkerId}}
 Authorization: Bearer {{walkerToken}}
 
+### 4d. Update a walker
+PUT {{baseUrl}}/walkers/{{walkerId}}
+Authorization: Bearer {{walkerToken}}
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Walker",
+  "email": "jane.walker2@example.com",
+  "phone": "02920999111",
+  "bio": "Experienced dog walker covering Cardiff city centre."
+}
+
 # =============================================================================
 # 5. DOGS
 # =============================================================================
@@ -251,7 +264,21 @@ Content-Type: application/json
 ###
 @walkId = {{acceptWalkRequest.response.body.id}}
 
-### 6e. Decline a walk request
+### 6e. Update a walk request
+PUT {{baseUrl}}/walk-requests/{{walkRequestId}}
+Authorization: Bearer {{walkerToken}}
+Content-Type: application/json
+
+{
+  "ownerId": "{{ownerId}}",
+  "dogIds": ["{{dogId}}"],
+  "requestedDate": "2026-05-02",
+  "requestedStartTime": "10:00:00Z",
+  "durationMinutes": 60,
+  "walkType": "solo_walk"
+}
+
+### 6f. Decline a walk request
 # POST {{baseUrl}}/walk-requests/{{walkRequestId}}/decline
 # Authorization: Bearer {{walkerToken}}
 # Content-Type: application/json
@@ -272,14 +299,26 @@ Authorization: Bearer {{walkerToken}}
 GET {{baseUrl}}/walks/{{walkId}}
 Authorization: Bearer {{walkerToken}}
 
-### 7c. Start a walk
+### 7c. Update a walk
+PUT {{baseUrl}}/walks/{{walkId}}
+Authorization: Bearer {{walkerToken}}
+Content-Type: application/json
+
+{
+  "scheduledDate": "2026-05-01",
+  "scheduledStartTime": "09:30:00Z",
+  "durationMinutes": 60,
+  "routeNotes": "Use the river path today."
+}
+
+### 7d. Start a walk
 POST {{baseUrl}}/walks/{{walkId}}/start
 Authorization: Bearer {{walkerToken}}
 Content-Type: application/json
 
 {}
 
-### 7d. Post a walk update (note)
+### 7e. Post a walk update (note)
 # @name postWalkUpdate
 POST {{baseUrl}}/walks/{{walkId}}/updates
 Authorization: Bearer {{walkerToken}}
@@ -290,23 +329,23 @@ Content-Type: application/json
   "note": "Buddy is doing great — just passing Bute Park!"
 }
 
-### 7e. List walk updates
+### 7f. List walk updates
 GET {{baseUrl}}/walks/{{walkId}}/updates
 Authorization: Bearer {{walkerToken}}
 
-### 7f. Complete a walk
+### 7g. Complete a walk
 POST {{baseUrl}}/walks/{{walkId}}/complete
 Authorization: Bearer {{walkerToken}}
 Content-Type: application/json
 
 {
-  "actualStartTime": "09:05",
-  "actualEndTime": "10:10",
+  "actualStartTime": "2026-05-01T09:05:00Z",
+  "actualEndTime": "2026-05-01T10:10:00Z",
   "distanceKm": 4.2,
   "summaryNotes": "Great walk — Buddy was very energetic today!"
 }
 
-### 7g. Cancel a walk
+### 7h. Cancel a walk
 # POST {{baseUrl}}/walks/{{walkId}}/cancel
 # Authorization: Bearer {{walkerToken}}
 # Content-Type: application/json
@@ -332,7 +371,7 @@ Content-Type: application/json
   "durationMinutes": 60,
   "recurrence": {
     "frequency": "weekly",
-    "dayOfWeek": "Monday",
+    "dayOfWeek": "monday",
     "startTime": "09:00:00Z"
   },
   "startDate": "2026-05-05"
@@ -362,6 +401,15 @@ Authorization: Bearer {{walkerToken}}
 Content-Type: application/json
 
 {}
+
+### 8f. Update a recurring walk
+PUT {{baseUrl}}/recurring-walks/{{recurringWalkId}}
+Authorization: Bearer {{walkerToken}}
+Content-Type: application/json
+
+{
+  "durationMinutes": 90
+}
 
 # =============================================================================
 # 9. INVOICES
@@ -398,7 +446,17 @@ Authorization: Bearer {{walkerToken}}
 GET {{baseUrl}}/invoices/{{invoiceId}}
 Authorization: Bearer {{walkerToken}}
 
-### 9d. Send an invoice to the owner
+### 9d. Update an invoice
+PUT {{baseUrl}}/invoices/{{invoiceId}}
+Authorization: Bearer {{walkerToken}}
+Content-Type: application/json
+
+{
+  "dueDate": "2026-05-20",
+  "notes": "Updated: please pay by bank transfer."
+}
+
+### 9e. Send an invoice to the owner
 POST {{baseUrl}}/invoices/{{invoiceId}}/send
 Authorization: Bearer {{walkerToken}}
 Content-Type: application/json
