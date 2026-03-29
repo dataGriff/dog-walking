@@ -22,7 +22,7 @@ describe('Dog routes', () => {
     it('returns 404 if owner not found', async () => {
       const { token } = await createWalkerToken();
       const res = await request(app)
-        .get('/v1/owners/non-existent/dogs')
+        .get('/v1/owners/00000000-0000-0000-0000-000000000000/dogs')
         .set('Authorization', `Bearer ${token}`);
       expect(res.status).toBe(404);
     });

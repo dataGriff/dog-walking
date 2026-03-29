@@ -163,7 +163,7 @@ router.get('/:walkId/updates', authenticate, (req, res) => {
 });
 
 // POST /walks/:walkId/updates - multipart/form-data
-router.post('/:walkId/updates', authenticate, upload.single('image'), (req, res) => {
+router.post('/:walkId/updates', authenticate, (req, res) => {
   const walk = store.walks.get(req.params.walkId);
   if (!walk) {
     return res.status(404).json({ code: 'RESOURCE_NOT_FOUND', message: 'Walk not found.' });

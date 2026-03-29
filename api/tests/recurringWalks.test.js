@@ -13,7 +13,7 @@ function seedRecurringWalk(overrides = {}) {
     dogIds: [uuidv4()],
     walkType: 'solo_walk',
     durationMinutes: 60,
-    recurrence: { frequency: 'weekly', dayOfWeek: 'Monday', startTime: '09:00' },
+    recurrence: { frequency: 'weekly', dayOfWeek: 'monday', startTime: '09:00:00Z' },
     startDate: '2026-06-01',
     preferredWalkerId: null,
     status: 'active',
@@ -46,7 +46,7 @@ describe('Recurring Walk routes', () => {
         .send({
           ownerId: owner.id, dogIds: [dog.id], walkType: 'solo_walk',
           durationMinutes: 60,
-          recurrence: { frequency: 'weekly', dayOfWeek: 'Monday', startTime: '09:00' },
+          recurrence: { frequency: 'weekly', dayOfWeek: 'monday', startTime: '09:00:00Z' },
           startDate: '2026-06-01',
         });
       expect(res.status).toBe(201);
@@ -70,7 +70,7 @@ describe('Recurring Walk routes', () => {
     it('returns 404 for non-existent', async () => {
       const { token } = await createWalkerToken();
       const res = await request(app)
-        .get('/v1/recurring-walks/non-existent')
+        .get('/v1/recurring-walks/00000000-0000-0000-0000-000000000000')
         .set('Authorization', `Bearer ${token}`);
       expect(res.status).toBe(404);
     });

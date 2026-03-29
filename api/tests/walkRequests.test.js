@@ -22,7 +22,7 @@ describe('Walk Request routes', () => {
       const res = await request(app).post('/v1/walk-requests').set('Authorization', `Bearer ${token}`)
         .send({
           ownerId: owner.id, dogIds: [dog.id],
-          requestedDate: '2026-06-01', requestedStartTime: '09:00',
+          requestedDate: '2026-06-01', requestedStartTime: '09:00:00Z',
           durationMinutes: 60, walkType: 'solo_walk',
         });
       expect(res.status).toBe(201);
@@ -47,7 +47,7 @@ describe('Walk Request routes', () => {
     it('returns 404 for non-existent', async () => {
       const { token } = await createWalkerToken();
       const res = await request(app)
-        .get('/v1/walk-requests/non-existent')
+        .get('/v1/walk-requests/00000000-0000-0000-0000-000000000000')
         .set('Authorization', `Bearer ${token}`);
       expect(res.status).toBe(404);
     });
@@ -64,7 +64,7 @@ describe('Walk Request routes', () => {
         .set('Authorization', `Bearer ${token}`)
         .send({
           ownerId: owner.id, dogIds: [dog.id],
-          requestedDate: '2026-07-01', requestedStartTime: '10:00',
+          requestedDate: '2026-07-01', requestedStartTime: '10:00:00Z',
           durationMinutes: 30, walkType: 'puppy_walk',
         });
       expect(res.status).toBe(200);
@@ -95,7 +95,7 @@ describe('Walk Request routes', () => {
         .post(`/v1/walk-requests/${wr.id}/accept`)
         .set('Authorization', `Bearer ${token}`)
         .send({
-          walkerId: walker.id, confirmedDate: '2026-06-01', confirmedStartTime: '09:00',
+          walkerId: walker.id, confirmedDate: '2026-06-01', confirmedStartTime: '09:00:00Z',
         });
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('id');
@@ -111,7 +111,7 @@ describe('Walk Request routes', () => {
       const res = await request(app)
         .post(`/v1/walk-requests/${wr.id}/accept`)
         .set('Authorization', `Bearer ${token}`)
-        .send({ walkerId: walker.id, confirmedDate: '2026-06-01', confirmedStartTime: '09:00' });
+        .send({ walkerId: walker.id, confirmedDate: '2026-06-01', confirmedStartTime: '09:00:00Z' });
       expect(res.status).toBe(400);
     });
 
@@ -122,7 +122,7 @@ describe('Walk Request routes', () => {
       const res = await request(app)
         .post(`/v1/walk-requests/${wr.id}/accept`)
         .set('Authorization', `Bearer ${token}`)
-        .send({ walkerId: walker.id, confirmedDate: '2026-06-01', confirmedStartTime: '09:00' });
+        .send({ walkerId: walker.id, confirmedDate: '2026-06-01', confirmedStartTime: '09:00:00Z' });
       expect(res.status).toBe(403);
     });
   });

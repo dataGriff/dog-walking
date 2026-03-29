@@ -31,6 +31,8 @@ info:
     name: MIT
 
 servers:
+  - url: http://localhost:3000/v1
+    description: Local development server
   - url: https://api.dogwalking.example.com/v1
     description: Production server
   - url: https://staging-api.dogwalking.example.com/v1
@@ -1237,7 +1239,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RecurringWalkCreate'
+              $ref: '#/components/schemas/RecurringWalkUpdate'
       responses:
         '200':
           description: Recurring walk updated
@@ -1432,7 +1434,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InvoiceRequest'
+              $ref: '#/components/schemas/InvoiceUpdate'
       responses:
         '200':
           description: Invoice updated
@@ -2426,7 +2428,7 @@ components:
           type: string
           format: time
           description: Requested start time in HH:MM:SS format (RFC 3339)
-          example: '09:00:00'
+          example: '09:00:00Z'
         durationMinutes:
           type: integer
           minimum: 15
@@ -2458,7 +2460,7 @@ components:
         confirmedStartTime:
           type: string
           format: time
-          example: '09:00:00'
+          example: '09:00:00Z'
         notes:
           type: string
           example: I'll be there at 9am sharp!
@@ -2512,7 +2514,7 @@ components:
         requestedStartTime:
           type: string
           format: time
-          example: '09:00:00'
+          example: '09:00:00Z'
         durationMinutes:
           type: integer
           example: 60
@@ -2583,7 +2585,7 @@ components:
         scheduledStartTime:
           type: string
           format: time
-          example: '09:15:00'
+          example: '09:15:00Z'
         durationMinutes:
           type: integer
           minimum: 15
@@ -2681,7 +2683,7 @@ components:
         scheduledStartTime:
           type: string
           format: time
-          example: '09:00:00'
+          example: '09:00:00Z'
         durationMinutes:
           type: integer
           example: 60
@@ -2912,7 +2914,47 @@ components:
           type: string
           format: time
           description: Walk start time in RFC 3339 HH:MM:SS format
-          example: '09:00:00'
+          example: '09:00:00Z'
+
+    RecurringWalkUpdate:
+      type: object
+      properties:
+        ownerId:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        dogIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+          example:
+            - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        walkType:
+          $ref: '#/components/schemas/WalkType'
+        durationMinutes:
+          type: integer
+          minimum: 15
+          maximum: 240
+          example: 60
+        recurrence:
+          $ref: '#/components/schemas/RecurrenceSchedule'
+        preferredWalkerId:
+          type: string
+          format: uuid
+          example: 7b1e4d2a-1234-5678-abcd-ef0123456789
+        startDate:
+          type: string
+          format: date
+          example: '2025-05-05'
+        endDate:
+          type: string
+          format: date
+          example: '2025-12-31'
+        notes:
+          type: string
+          example: Please use the side gate.
 
     RecurringWalkCreate:
       type: object
@@ -3037,6 +3079,32 @@ components:
             $ref: '#/components/schemas/RecurringWalk'
         pagination:
           $ref: '#/components/schemas/Pagination'
+
+    InvoiceUpdate:
+      type: object
+      properties:
+        ownerId:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        walkerId:
+          type: string
+          format: uuid
+          example: 7b1e4d2a-1234-5678-abcd-ef0123456789
+        lineItems:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/InvoiceLineItem'
+        dueDate:
+          type: string
+          format: date
+          description: Payment due date
+          example: '2025-04-30'
+        notes:
+          type: string
+          description: Additional notes on the invoice
+          example: Thank you for choosing Happy Paws Walking Service!
 
     InvoiceRequest:
       type: object

@@ -80,7 +80,7 @@ describe('Invoice routes', () => {
     it('returns 404 for non-existent', async () => {
       const { token } = await createWalkerToken();
       const res = await request(app)
-        .get('/v1/invoices/non-existent')
+        .get('/v1/invoices/00000000-0000-0000-0000-000000000000')
         .set('Authorization', `Bearer ${token}`);
       expect(res.status).toBe(404);
     });

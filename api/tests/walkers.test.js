@@ -56,7 +56,7 @@ describe('Walker routes', () => {
     it('returns 404 for non-existent walker', async () => {
       const { token } = await createWalkerToken();
       const res = await request(app)
-        .get('/v1/walkers/non-existent')
+        .get('/v1/walkers/00000000-0000-0000-0000-000000000000')
         .set('Authorization', `Bearer ${token}`);
       expect(res.status).toBe(404);
     });

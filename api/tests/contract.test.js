@@ -168,7 +168,7 @@ describe('Contract Tests - Response Shapes', () => {
       const res = await request(app).post('/v1/walk-requests').set('Authorization', `Bearer ${token}`)
         .send({
           ownerId: owner.id, dogIds: [dog.id], requestedDate: '2026-06-01',
-          requestedStartTime: '09:00', durationMinutes: 60, walkType: 'solo_walk',
+          requestedStartTime: '09:00:00Z', durationMinutes: 60, walkType: 'solo_walk',
         });
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('id');
@@ -233,7 +233,7 @@ describe('Contract Tests - Response Shapes', () => {
         .send({
           ownerId: owner.id, dogIds: [dog.id], walkType: 'solo_walk',
           durationMinutes: 60,
-          recurrence: { frequency: 'weekly', dayOfWeek: 'Monday', startTime: '09:00' },
+          recurrence: { frequency: 'weekly', dayOfWeek: 'monday', startTime: '09:00:00Z' },
           startDate: '2026-06-01',
         });
       expect(res.status).toBe(201);
@@ -303,7 +303,7 @@ describe('Contract Tests - Response Shapes', () => {
     it('returns 404 for non-existent resources', async () => {
       const { token } = await createWalkerToken();
       const res = await request(app)
-        .get('/v1/interest-requests/non-existent-id')
+        .get('/v1/interest-requests/00000000-0000-0000-0000-000000000000')
         .set('Authorization', `Bearer ${token}`);
       expect(res.status).toBe(404);
       expect(res.body).toHaveProperty('code', 'RESOURCE_NOT_FOUND');

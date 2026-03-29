@@ -15,6 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Task
+        run: sh -c "$(curl -L https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -22,9 +25,7 @@ jobs:
           cache-dependency-path: api/package-lock.json
 
       - name: Install dependencies
-        working-directory: api
-        run: npm ci
+        run: task api:install
 
       - name: Run tests
-        working-directory: api
-        run: npm test
+        run: task api:test
