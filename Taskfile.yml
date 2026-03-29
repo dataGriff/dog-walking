@@ -46,12 +46,12 @@ tasks:
   lint:openapi:
     desc: Lint the OpenAPI spec with Spectral
     cmds:
-      - spectral lint docs/contracts/openapi.yaml --ruleset .spectral-openapi.yaml
+      - spectral lint docs/specifications/contracts/openapi.yaml --ruleset .spectral-openapi.yaml
 
   lint:asyncapi:
     desc: Lint the AsyncAPI spec with Spectral
     cmds:
-      - spectral lint docs/contracts/asyncapi.yaml --ruleset .spectral-asyncapi.yaml
+      - spectral lint docs/specifications/contracts/asyncapi.yaml --ruleset .spectral-asyncapi.yaml
 
   lint:
     desc: Run all linting (OpenAPI + AsyncAPI)

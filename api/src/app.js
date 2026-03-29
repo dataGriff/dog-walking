@@ -32,7 +32,7 @@ app.use(express.json());
 
 app.use(
   require('express-openapi-validator').middleware({
-    apiSpec: path.join(__dirname, '../../docs/contracts/openapi.yaml'),
+    apiSpec: path.join(__dirname, '../../docs/specifications/contracts/openapi.yaml'),
     validateRequests: true,
     validateResponses: false,
     ignorePaths: /^(?!\/v1)/,

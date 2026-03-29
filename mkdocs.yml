@@ -22,10 +22,11 @@ theme:
 
 nav:
   - Home: index.md
-  - Product Requirements: prd.md
-  - Domain Model: domain-model.md
-  - Auth Matrix: auth-matrix.md
-  - Sequence Diagrams: sequence-diagrams.md
+  - Specifications:
+    - Product Requirements: specifications/prd.md
+    - Domain Model: specifications/domain-model.md
+    - Auth Matrix: specifications/auth-matrix.md
+    - Sequence Diagrams: specifications/sequence-diagrams.md
 
 markdown_extensions:
   - pymdownx.superfences:

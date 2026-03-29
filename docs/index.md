@@ -6,12 +6,12 @@ A product specification and OpenAPI contract for the **Stardogwalker** dog walki
 
 | Document | Description |
 |---|---|
-| [Product Requirements](prd.md) | Problem statement, personas, user stories, and goals |
-| [Domain Model](domain-model.md) | Domain entities, relationships, business rules, and aggregate boundaries |
-| [Auth Matrix](auth-matrix.md) | Authorisation matrix — which roles can perform which operations |
-| [Sequence Diagrams](sequence-diagrams.md) | Mermaid sequence diagrams for all key interaction flows |
-| [**Interactive API Reference →**](api-reference.html) | Full REST API contract with live try-it-out and multi-language code samples |
-| [**AsyncAPI Event Reference →**](asyncapi-reference.html) | Full domain event catalogue with CloudEvents 1.0 schemas and AMQP channel bindings |
+| [Product Requirements](specifications/prd.md) | Problem statement, personas, user stories, and goals |
+| [Domain Model](specifications/domain-model.md) | Domain entities, relationships, business rules, and aggregate boundaries |
+| [Auth Matrix](specifications/auth-matrix.md) | Authorisation matrix — which roles can perform which operations |
+| [Sequence Diagrams](specifications/sequence-diagrams.md) | Mermaid sequence diagrams for all key interaction flows |
+| [**Interactive API Reference →**](implementation/api-reference.html) | Full REST API contract with live try-it-out and multi-language code samples |
+| [**AsyncAPI Event Reference →**](implementation/asyncapi-reference.html) | Full domain event catalogue with CloudEvents 1.0 schemas and AMQP channel bindings |
 
 ## Overview
 

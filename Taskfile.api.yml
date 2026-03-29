@@ -838,10 +838,33 @@ tasks:
   # FULL DEMO WORKFLOW
   # ---------------------------------------------------------------------------
 
+  server:start:
+    desc: Start the API server in the background and wait until it is ready
+    cmds:
+      - |
+        if curl -s --max-time 2 -o /dev/null http://localhost:3000/v1/auth/register 2>/dev/null; then
+          echo "API server already running."
+        else
+          echo "Starting API server..."
+          cd api && npm start &
+          SERVER_PID=$!
+          echo "SERVER_PID=$SERVER_PID" >> {{.STATE}}
+          for i in $(seq 1 20); do
+            sleep 1
+            if curl -s --max-time 2 -o /dev/null http://localhost:3000/v1/auth/register 2>/dev/null; then
+              echo "API server ready."
+              exit 0
+            fi
+          done
+          echo "ERROR: API server did not become ready in time." >&2
+          exit 1
+        fi
+
   demo:
-    desc: Run the full walk lifecycle end-to-end (requires a running API server)
+    desc: Start the API server and run the full walk lifecycle end-to-end
     cmds:
       - task: state:clear
+      - task: server:start
       - task: auth:register:walker
       - task: auth:register:owner
       - task: interest:submit
