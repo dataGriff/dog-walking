@@ -1,0 +1,15 @@
+meta {
+  name: List Owners
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/owners
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}

@@ -1,0 +1,15 @@
+meta {
+  name: List Invoices
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/invoices
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}

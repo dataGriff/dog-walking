@@ -1,0 +1,21 @@
+meta {
+  name: Update Recurring Walk
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/recurring-walks/{{recurringWalkId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "durationMinutes": 90
+  }
+}

@@ -1,5 +1,10 @@
 version: '3'
 
+includes:
+  demo:
+    taskfile: ./Taskfile.demo.yml
+    optional: true
+
 tasks:
   default:
     desc: List available tasks
@@ -21,6 +26,8 @@ tasks:
   api:dev:
     desc: Start the API in development mode with nodemon
     dir: api
+    env:
+      CORS_ORIGINS: 'http://localhost:8000,http://127.0.0.1:8000'
     cmds:
       - npm run dev
 

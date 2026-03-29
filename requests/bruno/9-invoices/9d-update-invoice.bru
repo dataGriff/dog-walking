@@ -1,0 +1,22 @@
+meta {
+  name: Update Invoice
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/invoices/{{invoiceId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "dueDate": "2026-05-20",
+    "notes": "Updated: please pay by bank transfer."
+  }
+}

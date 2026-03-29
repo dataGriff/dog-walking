@@ -1,0 +1,31 @@
+meta {
+  name: Create Walk Request
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/walk-requests
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "ownerId": "{{ownerId}}",
+    "dogIds": ["{{dogId}}"],
+    "requestedDate": "2026-05-01",
+    "requestedStartTime": "09:00:00Z",
+    "durationMinutes": 60,
+    "walkType": "solo_walk",
+    "notes": "Buddy needs his morning walk."
+  }
+}
+
+script:post-response {
+  bru.setVar("walkRequestId", res.getBody().id);
+}

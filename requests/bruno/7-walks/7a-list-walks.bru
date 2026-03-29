@@ -1,0 +1,15 @@
+meta {
+  name: List Walks
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/walks
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}

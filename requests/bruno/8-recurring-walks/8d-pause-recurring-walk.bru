@@ -1,0 +1,19 @@
+meta {
+  name: Pause Recurring Walk
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/recurring-walks/{{recurringWalkId}}/pause
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {}
+}

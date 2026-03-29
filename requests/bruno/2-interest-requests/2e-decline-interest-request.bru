@@ -1,0 +1,21 @@
+meta {
+  name: Decline Interest Request
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/interest-requests/{{interestRequestId}}/decline
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "declineReason": "Not currently covering the CF5 area."
+  }
+}

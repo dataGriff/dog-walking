@@ -1,0 +1,21 @@
+meta {
+  name: Decline Walk Request
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/walk-requests/{{walkRequestId}}/decline
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "declineReason": "Fully booked that day."
+  }
+}

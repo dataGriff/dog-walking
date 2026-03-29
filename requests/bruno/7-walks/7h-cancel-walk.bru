@@ -1,0 +1,21 @@
+meta {
+  name: Cancel Walk
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/walks/{{walkId}}/cancel
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "cancelReason": "Owner requested cancellation."
+  }
+}

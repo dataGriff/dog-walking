@@ -1,0 +1,34 @@
+meta {
+  name: Create Recurring Walk
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/recurring-walks
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "ownerId": "{{ownerId}}",
+    "dogIds": ["{{dogId}}"],
+    "walkType": "solo_walk",
+    "durationMinutes": 60,
+    "recurrence": {
+      "frequency": "weekly",
+      "dayOfWeek": "monday",
+      "startTime": "09:00:00Z"
+    },
+    "startDate": "2026-05-05"
+  }
+}
+
+script:post-response {
+  bru.setVar("recurringWalkId", res.getBody().id);
+}

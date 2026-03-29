@@ -1,0 +1,25 @@
+meta {
+  name: Register Walker
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "jane.walker@example.com",
+    "password": "password123",
+    "firstName": "Jane",
+    "lastName": "Walker",
+    "role": "walker"
+  }
+}
+
+script:post-response {
+  bru.setVar("walkerToken", res.getBody().accessToken);
+}

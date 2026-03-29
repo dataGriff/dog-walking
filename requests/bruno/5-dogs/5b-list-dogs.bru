@@ -1,0 +1,15 @@
+meta {
+  name: List Dogs for Owner
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/owners/{{ownerId}}/dogs
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}

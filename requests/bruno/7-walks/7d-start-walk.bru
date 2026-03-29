@@ -1,0 +1,19 @@
+meta {
+  name: Start Walk
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/walks/{{walkId}}/start
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {}
+}

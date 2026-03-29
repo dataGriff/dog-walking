@@ -1,0 +1,24 @@
+meta {
+  name: Complete Walk
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/walks/{{walkId}}/complete
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "actualStartTime": "2026-05-01T09:05:00Z",
+    "actualEndTime": "2026-05-01T10:10:00Z",
+    "distanceKm": 4.2,
+    "summaryNotes": "Great walk — Buddy was very energetic today!"
+  }
+}

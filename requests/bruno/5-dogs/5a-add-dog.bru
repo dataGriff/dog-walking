@@ -1,0 +1,27 @@
+meta {
+  name: Add Dog to Owner
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/owners/{{ownerId}}/dogs
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "name": "Buddy",
+    "breed": "Labrador",
+    "dateOfBirth": "2022-03-15"
+  }
+}
+
+script:post-response {
+  bru.setVar("dogId", res.getBody().id);
+}

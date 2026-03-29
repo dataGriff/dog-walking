@@ -1,0 +1,25 @@
+meta {
+  name: Register Owner
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "john.owner@example.com",
+    "password": "password123",
+    "firstName": "John",
+    "lastName": "Owner",
+    "role": "owner"
+  }
+}
+
+script:post-response {
+  bru.setVar("ownerToken", res.getBody().accessToken);
+}

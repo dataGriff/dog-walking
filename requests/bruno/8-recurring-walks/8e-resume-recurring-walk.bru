@@ -1,0 +1,19 @@
+meta {
+  name: Resume Recurring Walk
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/recurring-walks/{{recurringWalkId}}/resume
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {}
+}

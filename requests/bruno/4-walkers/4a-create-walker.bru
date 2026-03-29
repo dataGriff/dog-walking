@@ -1,0 +1,28 @@
+meta {
+  name: Create Walker
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/walkers
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{walkerToken}}
+}
+
+body:json {
+  {
+    "firstName": "Jane",
+    "lastName": "Walker",
+    "email": "jane.walker2@example.com",
+    "phone": "02920111222"
+  }
+}
+
+script:post-response {
+  bru.setVar("walkerId", res.getBody().id);
+}
