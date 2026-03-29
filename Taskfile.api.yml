@@ -15,6 +15,7 @@ tasks:
     cmds:
       - rm -f {{.STATE}}
       - touch {{.STATE}}
+      - echo "DEMO_ID=$(date +%s)" >> {{.STATE}}
       - echo "Demo state cleared."
 
   # ---------------------------------------------------------------------------
@@ -23,17 +24,20 @@ tasks:
 
   auth:register:walker:
     desc: Register a walker (saves WALKER_TOKEN)
+    vars:
+      DEMO_ID:
+        sh: grep '^DEMO_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
     cmds:
       - |
         RESPONSE=$(curl -s -X POST {{.BASE_URL}}/auth/register \
           -H "Content-Type: application/json" \
-          -d '{
-            "email": "jane.walker@example.com",
-            "password": "password123",
-            "firstName": "Jane",
-            "lastName": "Walker",
-            "role": "walker"
-          }')
+          -d "{
+            \"email\": \"jane.walker.{{.DEMO_ID}}@example.com\",
+            \"password\": \"password123\",
+            \"firstName\": \"Jane\",
+            \"lastName\": \"Walker\",
+            \"role\": \"walker\"
+          }")
         echo "$RESPONSE" | jq .
         TOKEN=$(echo "$RESPONSE" | jq -r '.accessToken')
         grep -v "^WALKER_TOKEN=" {{.STATE}} > {{.STATE}}.tmp 2>/dev/null || true
@@ -42,17 +46,20 @@ tasks:
 
   auth:register:owner:
     desc: Register an owner (saves OWNER_TOKEN)
+    vars:
+      DEMO_ID:
+        sh: grep '^DEMO_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
     cmds:
       - |
         RESPONSE=$(curl -s -X POST {{.BASE_URL}}/auth/register \
           -H "Content-Type: application/json" \
-          -d '{
-            "email": "john.owner@example.com",
-            "password": "password123",
-            "firstName": "John",
-            "lastName": "Owner",
-            "role": "owner"
-          }')
+          -d "{
+            \"email\": \"john.owner.{{.DEMO_ID}}@example.com\",
+            \"password\": \"password123\",
+            \"firstName\": \"John\",
+            \"lastName\": \"Owner\",
+            \"role\": \"owner\"
+          }")
         echo "$RESPONSE" | jq .
         TOKEN=$(echo "$RESPONSE" | jq -r '.accessToken')
         grep -v "^OWNER_TOKEN=" {{.STATE}} > {{.STATE}}.tmp 2>/dev/null || true
@@ -61,14 +68,17 @@ tasks:
 
   auth:login:walker:
     desc: Login as walker (saves WALKER_TOKEN and WALKER_REFRESH_TOKEN)
+    vars:
+      DEMO_ID:
+        sh: grep '^DEMO_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
     cmds:
       - |
         RESPONSE=$(curl -s -X POST {{.BASE_URL}}/auth/login \
           -H "Content-Type: application/json" \
-          -d '{
-            "email": "jane.walker@example.com",
-            "password": "password123"
-          }')
+          -d "{
+            \"email\": \"jane.walker.{{.DEMO_ID}}@example.com\",
+            \"password\": \"password123\"
+          }")
         echo "$RESPONSE" | jq .
         TOKEN=$(echo "$RESPONSE" | jq -r '.accessToken')
         REFRESH=$(echo "$RESPONSE" | jq -r '.refreshToken')
@@ -109,18 +119,21 @@ tasks:
 
   interest:submit:
     desc: Submit an interest request — public, no auth (saves INTEREST_REQUEST_ID)
+    vars:
+      DEMO_ID:
+        sh: grep '^DEMO_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
     cmds:
       - |
         RESPONSE=$(curl -s -X POST {{.BASE_URL}}/interest-requests \
           -H "Content-Type: application/json" \
-          -d '{
-            "firstName": "Sarah",
-            "lastName": "Davies",
-            "email": "sarah.davies@example.com",
-            "phone": "+44 7700 900789",
-            "postcode": "CF10 1AB",
-            "dogDescription": "A friendly 3-year-old Labrador called Buddy."
-          }')
+          -d "{
+            \"firstName\": \"Sarah\",
+            \"lastName\": \"Davies\",
+            \"email\": \"sarah.davies.{{.DEMO_ID}}@example.com\",
+            \"phone\": \"+44 7700 900789\",
+            \"postcode\": \"CF10 1AB\",
+            \"dogDescription\": \"A friendly 3-year-old Labrador called Buddy.\"
+          }")
         echo "$RESPONSE" | jq .
         ID=$(echo "$RESPONSE" | jq -r '.id')
         grep -v "^INTEREST_REQUEST_ID=" {{.STATE}} > {{.STATE}}.tmp 2>/dev/null || true
@@ -186,17 +199,19 @@ tasks:
     vars:
       WALKER_TOKEN:
         sh: grep '^WALKER_TOKEN=' {{.STATE}} 2>/dev/null | cut -d= -f2-
+      DEMO_ID:
+        sh: grep '^DEMO_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
     cmds:
       - |
         RESPONSE=$(curl -s -X POST {{.BASE_URL}}/owners \
           -H "Authorization: Bearer {{.WALKER_TOKEN}}" \
           -H "Content-Type: application/json" \
-          -d '{
-            "firstName": "John",
-            "lastName": "Owner",
-            "email": "john.owner2@example.com",
-            "phone": "02920123456"
-          }')
+          -d "{
+            \"firstName\": \"John\",
+            \"lastName\": \"Owner\",
+            \"email\": \"john.owner2.{{.DEMO_ID}}@example.com\",
+            \"phone\": \"02920123456\"
+          }")
         echo "$RESPONSE" | jq .
         ID=$(echo "$RESPONSE" | jq -r '.id')
         grep -v "^OWNER_ID=" {{.STATE}} > {{.STATE}}.tmp 2>/dev/null || true
@@ -232,17 +247,19 @@ tasks:
         sh: grep '^WALKER_TOKEN=' {{.STATE}} 2>/dev/null | cut -d= -f2-
       OWNER_ID:
         sh: grep '^OWNER_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
+      DEMO_ID:
+        sh: grep '^DEMO_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
     cmds:
       - |
         curl -s -X PUT {{.BASE_URL}}/owners/{{.OWNER_ID}} \
           -H "Authorization: Bearer {{.WALKER_TOKEN}}" \
           -H "Content-Type: application/json" \
-          -d '{
-            "firstName": "John",
-            "lastName": "Owner",
-            "email": "john.owner2@example.com",
-            "phone": "02920999888"
-          }' | jq .
+          -d "{
+            \"firstName\": \"John\",
+            \"lastName\": \"Owner\",
+            \"email\": \"john.owner2.{{.DEMO_ID}}@example.com\",
+            \"phone\": \"02920999888\"
+          }" | jq .
 
   # ---------------------------------------------------------------------------
   # 4. WALKERS
@@ -253,17 +270,19 @@ tasks:
     vars:
       WALKER_TOKEN:
         sh: grep '^WALKER_TOKEN=' {{.STATE}} 2>/dev/null | cut -d= -f2-
+      DEMO_ID:
+        sh: grep '^DEMO_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
     cmds:
       - |
         RESPONSE=$(curl -s -X POST {{.BASE_URL}}/walkers \
           -H "Authorization: Bearer {{.WALKER_TOKEN}}" \
           -H "Content-Type: application/json" \
-          -d '{
-            "firstName": "Jane",
-            "lastName": "Walker",
-            "email": "jane.walker2@example.com",
-            "phone": "02920111222"
-          }')
+          -d "{
+            \"firstName\": \"Jane\",
+            \"lastName\": \"Walker\",
+            \"email\": \"jane.walker2.{{.DEMO_ID}}@example.com\",
+            \"phone\": \"02920111222\"
+          }")
         echo "$RESPONSE" | jq .
         ID=$(echo "$RESPONSE" | jq -r '.id')
         grep -v "^WALKER_ID=" {{.STATE}} > {{.STATE}}.tmp 2>/dev/null || true
@@ -299,18 +318,20 @@ tasks:
         sh: grep '^WALKER_TOKEN=' {{.STATE}} 2>/dev/null | cut -d= -f2-
       WALKER_ID:
         sh: grep '^WALKER_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
+      DEMO_ID:
+        sh: grep '^DEMO_ID=' {{.STATE}} 2>/dev/null | cut -d= -f2-
     cmds:
       - |
         curl -s -X PUT {{.BASE_URL}}/walkers/{{.WALKER_ID}} \
           -H "Authorization: Bearer {{.WALKER_TOKEN}}" \
           -H "Content-Type: application/json" \
-          -d '{
-            "firstName": "Jane",
-            "lastName": "Walker",
-            "email": "jane.walker2@example.com",
-            "phone": "02920999111",
-            "bio": "Experienced dog walker covering Cardiff city centre."
-          }' | jq .
+          -d "{
+            \"firstName\": \"Jane\",
+            \"lastName\": \"Walker\",
+            \"email\": \"jane.walker2.{{.DEMO_ID}}@example.com\",
+            \"phone\": \"02920999111\",
+            \"bio\": \"Experienced dog walker covering Cardiff city centre.\"
+          }" | jq .
 
   # ---------------------------------------------------------------------------
   # 5. DOGS
@@ -542,7 +563,7 @@ tasks:
         curl -s -X POST {{.BASE_URL}}/walks/{{.WALK_ID}}/start \
           -H "Authorization: Bearer {{.WALKER_TOKEN}}" \
           -H "Content-Type: application/json" \
-          -d '{}' | jq .
+          -d '{"actualStartTime": "2026-05-01T09:05:00Z"}' | jq .
 
   walks:update:post:
     desc: Post a walk update / note
@@ -555,11 +576,8 @@ tasks:
       - |
         curl -s -X POST {{.BASE_URL}}/walks/{{.WALK_ID}}/updates \
           -H "Authorization: Bearer {{.WALKER_TOKEN}}" \
-          -H "Content-Type: application/json" \
-          -d '{
-            "type": "note",
-            "note": "Buddy is doing great — just passing Bute Park!"
-          }' | jq .
+          -F "type=note" \
+          -F "note=Buddy is doing great — just passing Bute Park!" | jq .
 
   walks:updates:list:
     desc: List all updates for a walk
