@@ -17,6 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Task
+        run: sh -c "$(curl -L https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -24,8 +27,8 @@ jobs:
       - name: Install Spectral
         run: npm install -g @stoplight/spectral-cli
 
-      - name: Lint OpenAPI spec
-        run: spectral lint docs/contracts/openapi.yaml
+      - name: Lint contracts
+        run: task lint
 
   deploy:
     needs: lint
@@ -33,6 +36,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Task
+        run: sh -c "$(curl -L https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
       - uses: actions/setup-python@v5
         with:
@@ -42,4 +48,4 @@ jobs:
         run: pip install mkdocs-material
 
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
+        run: task docs:deploy

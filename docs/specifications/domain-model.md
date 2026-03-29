@@ -104,7 +104,7 @@ optionally nominate a preferred **Walker**.
 | dogIds            | UUID[]   | ✓        | FK[] → Dog (≥1 dog per request)              |
 | preferredWalkerId | UUID     | ✗        | FK → Walker; optional preference             |
 | requestedDate     | date     | ✓        |                                              |
-| requestedStartTime| time     | ✓        | RFC 3339 time (`HH:MM:SS`)                   |
+| requestedStartTime| time     | ✓        | RFC 3339 time (`HH:MM:SSZ`)                  |
 | durationMinutes   | integer  | ✓        | 15–240 minutes                               |
 | walkType          | enum     | ✓        | See **WalkType** enum below                  |
 | notes             | string   | ✗        | Special instructions for the walker          |
@@ -141,7 +141,7 @@ one **Walker**, and one or more **Dogs**.
 | walkerId           | UUID     | ✓        | FK → Walker                             |
 | dogIds             | UUID[]   | ✓        | FK[] → Dog                              |
 | scheduledDate      | date     | ✓        |                                         |
-| scheduledStartTime | time     | ✓        | RFC 3339 time (`HH:MM:SS`)             |
+| scheduledStartTime | time     | ✓        | RFC 3339 time (`HH:MM:SSZ`)            |
 | durationMinutes    | integer  | ✓        |                                         |
 | walkType           | enum     | ✓        | Copied from the originating WalkRequest |
 | agreedRate         | decimal  | ✓        | Hourly rate in GBP resolved from walker's WalkRate card; total walk cost is derived at invoicing time |
@@ -336,7 +336,7 @@ Embedded in **RecurringWalk**. Defines the cadence of walk generation.
 |-------------|---------|----------|-------------------------------------------------------------------|
 | frequency   | enum    | ✓        | `weekly` or `fortnightly`                                         |
 | dayOfWeek   | enum    | ✓        | `monday` … `sunday`                                               |
-| startTime   | time    | ✓        | RFC 3339 time (`HH:MM:SS`); applied to every generated request    |
+| startTime   | time    | ✓        | RFC 3339 time (`HH:MM:SSZ`); applied to every generated request   |
 
 ---
 

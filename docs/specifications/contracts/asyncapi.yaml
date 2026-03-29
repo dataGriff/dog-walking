@@ -37,6 +37,7 @@ info:
   contact:
     name: Stardogwalker API Support
     email: support@dogwalking.example.com
+    url: https://github.com/dataGriff/dog-walking
   license:
     name: MIT
 
@@ -55,6 +56,18 @@ servers:
       - userPassword: []
 
 defaultContentType: application/json
+
+tags:
+  - name: Interest Requests
+    description: Events related to prospective client interest requests.
+  - name: Walk Requests
+    description: Events related to walk requests submitted by owners.
+  - name: Walks
+    description: Events related to the lifecycle of a dog walk.
+  - name: Invoices
+    description: Events related to invoice creation and payment.
+  - name: Recurring Walks
+    description: Events related to recurring walk schedules.
 
 channels:
 
@@ -78,6 +91,7 @@ channels:
     subscribe:
       operationId: onInterestRequestSubmitted
       summary: Interest request submitted
+      description: Consumers receive this event when a prospective client submits an interest request via the public marketing site.
       tags:
         - name: Interest Requests
       message:
@@ -100,6 +114,7 @@ channels:
     subscribe:
       operationId: onInterestRequestAccepted
       summary: Interest request accepted; owner account created
+      description: Consumers receive this event when the walker accepts an interest request. An owner account and user record have already been created when this event fires.
       tags:
         - name: Interest Requests
       message:
@@ -119,6 +134,7 @@ channels:
     subscribe:
       operationId: onInterestRequestDeclined
       summary: Interest request declined
+      description: Consumers receive this event when the walker declines an interest request.
       tags:
         - name: Interest Requests
       message:
@@ -144,6 +160,7 @@ channels:
     subscribe:
       operationId: onWalkRequestSubmitted
       summary: Walk request submitted by an owner
+      description: Consumers receive this event when a dog owner submits a walk request. Walker-facing systems can use this to alert the walker to new pending requests.
       tags:
         - name: Walk Requests
       message:
@@ -166,6 +183,7 @@ channels:
     subscribe:
       operationId: onWalkRequestAccepted
       summary: Walk request accepted; walk scheduled
+      description: Consumers receive this event when the walker accepts a walk request. A walk record has been created with the agreed rate applied. Triggers a booking confirmation notification to the owner.
       tags:
         - name: Walk Requests
       message:
@@ -187,6 +205,7 @@ channels:
     subscribe:
       operationId: onWalkRequestDeclined
       summary: Walk request declined by the walker
+      description: Consumers receive this event when the walker declines a walk request. Triggers a notification to the owner including any decline reason.
       tags:
         - name: Walk Requests
       message:
@@ -206,6 +225,7 @@ channels:
     subscribe:
       operationId: onWalkRequestCancelled
       summary: Walk request cancelled by the owner
+      description: Consumers receive this event when the owner cancels a pending walk request.
       tags:
         - name: Walk Requests
       message:
@@ -230,6 +250,7 @@ channels:
     subscribe:
       operationId: onWalkScheduled
       summary: Walk scheduled
+      description: Consumers receive this event when a new walk is created from an accepted walk request.
       tags:
         - name: Walks
       message:
@@ -250,6 +271,7 @@ channels:
     subscribe:
       operationId: onWalkStarted
       summary: Walk started
+      description: Consumers receive this event when the walker marks a walk as started and its status transitions to in_progress.
       tags:
         - name: Walks
       message:
@@ -273,6 +295,7 @@ channels:
     subscribe:
       operationId: onWalkUpdatePosted
       summary: Walk update posted during an active walk
+      description: Consumers receive this event each time the walker posts an update during a walk. Triggers a real-time notification to the owner.
       tags:
         - name: Walks
       message:
@@ -294,6 +317,7 @@ channels:
     subscribe:
       operationId: onWalkCompleted
       summary: Walk completed
+      description: Consumers receive this event when the walker marks a walk as completed. Triggers a completion notification to the owner with the walk summary.
       tags:
         - name: Walks
       message:
@@ -314,6 +338,7 @@ channels:
     subscribe:
       operationId: onWalkCancelled
       summary: Walk cancelled
+      description: Consumers receive this event when a scheduled walk is cancelled by either the walker or the owner.
       tags:
         - name: Walks
       message:
@@ -337,6 +362,7 @@ channels:
     subscribe:
       operationId: onInvoiceCreated
       summary: Invoice created as a draft
+      description: Consumers receive this event when the walker creates a new invoice draft.
       tags:
         - name: Invoices
       message:
@@ -358,6 +384,7 @@ channels:
     subscribe:
       operationId: onInvoiceSent
       summary: Invoice sent to owner
+      description: Consumers receive this event when the walker sends an invoice to the owner. Triggers a notification to the owner with a link to view and pay the invoice.
       tags:
         - name: Invoices
       message:
@@ -379,6 +406,7 @@ channels:
     subscribe:
       operationId: onInvoicePaid
       summary: Invoice marked as paid
+      description: Consumers receive this event when the owner marks an invoice as paid. Triggers a payment confirmation notification to the walker.
       tags:
         - name: Invoices
       message:
@@ -401,6 +429,7 @@ channels:
     subscribe:
       operationId: onInvoiceOverdue
       summary: Invoice flagged as overdue
+      description: Consumers receive this event when the system automatically transitions a sent invoice to overdue after its due date has passed. Triggers an overdue notification to both owner and walker.
       tags:
         - name: Invoices
       message:
@@ -424,6 +453,7 @@ channels:
     subscribe:
       operationId: onRecurringWalkCreated
       summary: Recurring walk schedule created
+      description: Consumers receive this event when an owner creates a new recurring walk schedule.
       tags:
         - name: Recurring Walks
       message:
@@ -445,6 +475,7 @@ channels:
     subscribe:
       operationId: onRecurringWalkPaused
       summary: Recurring walk paused
+      description: Consumers receive this event when the owner pauses a recurring walk schedule. No further walk requests will be generated until the schedule is resumed.
       tags:
         - name: Recurring Walks
       message:
@@ -464,6 +495,7 @@ channels:
     subscribe:
       operationId: onRecurringWalkResumed
       summary: Recurring walk resumed
+      description: Consumers receive this event when the owner resumes a paused recurring walk schedule.
       tags:
         - name: Recurring Walks
       message:
@@ -485,6 +517,7 @@ channels:
     subscribe:
       operationId: onRecurringWalkCancelled
       summary: Recurring walk cancelled
+      description: Consumers receive this event when the owner permanently cancels a recurring walk schedule. All future pending walk requests linked to the schedule are cancelled.
       tags:
         - name: Recurring Walks
       message:
@@ -850,7 +883,7 @@ components:
           example: '2026-04-10'
         requestedStartTime:
           type: string
-          example: '09:00:00'
+          example: '09:00:00Z'
         durationMinutes:
           type: integer
           example: 60
@@ -904,7 +937,7 @@ components:
           example: '2026-04-10'
         scheduledStartTime:
           type: string
-          example: '09:00:00'
+          example: '09:00:00Z'
         durationMinutes:
           type: integer
           example: 60
@@ -1011,7 +1044,7 @@ components:
           example: '2026-04-10'
         scheduledStartTime:
           type: string
-          example: '09:00:00'
+          example: '09:00:00Z'
         durationMinutes:
           type: integer
           example: 60
@@ -1388,7 +1421,7 @@ components:
           example: monday
         startTime:
           type: string
-          example: '09:00:00'
+          example: '09:00:00Z'
         startDate:
           type: string
           format: date
@@ -1544,7 +1577,7 @@ components:
           dogIds:
             - c1a2b3d4-5678-90ab-cdef-1234567890ab
           requestedDate: '2026-04-10'
-          requestedStartTime: '09:00:00'
+          requestedStartTime: '09:00:00Z'
           durationMinutes: 60
           walkType: solo_walk
           preferredWalkerId: null
@@ -1575,7 +1608,7 @@ components:
           ownerId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
           walkerId: 7b1e4d2a-1234-5678-abcd-ef0123456789
           scheduledDate: '2026-04-10'
-          scheduledStartTime: '09:00:00'
+          scheduledStartTime: '09:00:00Z'
           durationMinutes: 60
           walkType: solo_walk
           agreedRate: 18.00
@@ -1849,7 +1882,7 @@ components:
           durationMinutes: 60
           frequency: weekly
           dayOfWeek: monday
-          startTime: '09:00:00'
+          startTime: '09:00:00Z'
           startDate: '2026-05-05'
           endDate: null
           createdAt: '2026-04-01T10:00:00Z'
