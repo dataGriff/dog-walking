@@ -1,6 +1,8 @@
 # Stardogwalker Docs
 
-A product specification and OpenAPI contract for the **Stardogwalker** dog walking management platform — Cardiff, South Wales.
+A product specification, OpenAPI contract, and reference API implementation for the **Stardogwalker** dog walking management platform — Cardiff, South Wales.
+
+This is the source of truth for documentation navigation — both humans and agents start here.
 
 ## Documentation
 

@@ -8,14 +8,7 @@ This project has two tiers of documentation. **Specifications are the source of 
 |------|----------|---------|-----------------|
 | **Specifications** | `docs/specifications/` | Authoritative business requirements and rendered contract viewers | Low — deliberate, reviewed |
 
-When implementing or modifying any feature, always consult the relevant spec documents first:
-
-- [`docs/specifications/prd.md`](docs/specifications/prd.md) — Product requirements, personas, user stories
-- [`docs/specifications/domain-model.md`](docs/specifications/domain-model.md) — Entities, attributes, relationships, business rules
-- [`docs/specifications/auth-matrix.md`](docs/specifications/auth-matrix.md) — Who can do what; role-based access rules
-- [`docs/specifications/sequence-diagrams.md`](docs/specifications/sequence-diagrams.md) — Key interaction flows
-- [`docs/specifications/contracts/openapi.yaml`](docs/specifications/contracts/openapi.yaml) — REST API contract (authoritative)
-- [`docs/specifications/contracts/asyncapi.yaml`](docs/specifications/contracts/asyncapi.yaml) — Domain events contract (authoritative)
+When implementing or modifying any feature, consult the relevant spec documents. [`docs/index.md`](docs/index.md) is the source of truth for all documentation navigation — both agents and humans start there.
 
 ## Core Rules
 
