@@ -14,6 +14,7 @@ This is the source of truth for documentation navigation — both humans and age
 | [Sequence Diagrams](specifications/sequence-diagrams.md) | Mermaid sequence diagrams for all key interaction flows |
 | [**Interactive API Reference →**](specifications/api-reference.html) | Full REST API contract with live try-it-out and multi-language code samples |
 | [**AsyncAPI Event Reference →**](specifications/asyncapi-reference.html) | Full domain event catalogue with CloudEvents 1.0 schemas and AMQP channel bindings |
+| [Database](implementation/database.md) | Database choice rationale, coding practices, and production deployment guide |
 
 ## Overview
 

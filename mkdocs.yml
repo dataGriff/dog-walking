@@ -27,6 +27,8 @@ nav:
     - Domain Model: specifications/domain-model.md
     - Auth Matrix: specifications/auth-matrix.md
     - Sequence Diagrams: specifications/sequence-diagrams.md
+  - Implementation:
+    - Database: implementation/database.md
 
 markdown_extensions:
   - pymdownx.superfences:
