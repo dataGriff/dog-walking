@@ -59,6 +59,20 @@ tasks:
       - task: lint:openapi
       - task: lint:asyncapi
 
+  ui:serve:
+    desc: Serve the UI locally on http://localhost:8080 (requires Python 3)
+    dir: ui
+    cmds:
+      - python3 -m http.server 8080
+
+  ui:serve:dev:
+    desc: Serve UI on port 8080 with API CORS origins set (starts API + UI together)
+    cmds:
+      - |
+        echo "Start the API first with: task api:dev"
+        echo "Then open http://localhost:8080 in your browser."
+        task ui:serve
+
   docs:serve:
     desc: Serve the MkDocs site locally
     cmds:

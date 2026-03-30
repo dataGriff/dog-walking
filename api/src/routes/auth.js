@@ -37,6 +37,7 @@ router.post('/auth/register', async (req, res, next) => {
         updatedAt: now,
       };
       store.owners.set(owner.id, owner);
+      user.profileId = owner.id;
     } else if (role === 'walker') {
       const walker = {
         id: uuidv4(),
@@ -49,6 +50,7 @@ router.post('/auth/register', async (req, res, next) => {
         updatedAt: now,
       };
       store.walkers.set(walker.id, walker);
+      user.profileId = walker.id;
     }
 
     const payload = { sub: userId, email, role };
@@ -59,7 +61,7 @@ router.post('/auth/register', async (req, res, next) => {
       accessToken,
       refreshToken,
       expiresIn: ACCESS_TOKEN_EXPIRES_IN,
-      user: { id: userId, email, firstName, lastName, role },
+      user: { id: userId, email, firstName, lastName, role, profileId: user.profileId || null },
     });
   } catch (err) {
     next(err);
@@ -87,6 +89,17 @@ router.post('/auth/login', async (req, res, next) => {
     const payload = { sub: user.id, email: user.email, role: user.role };
     const accessToken = signAccessToken(payload);
     const refreshToken = signRefreshToken(payload);
+
+    // Look up the user's associated owner/walker profile ID
+    let profileId = null;
+    if (user.role === 'owner') {
+      const ownerRecord = [...store.owners.values()].find(o => o.userId === user.id);
+      profileId = ownerRecord ? ownerRecord.id : null;
+    } else if (user.role === 'walker') {
+      const walkerRecord = [...store.walkers.values()].find(w => w.userId === user.id);
+      profileId = walkerRecord ? walkerRecord.id : null;
+    }
+
     res.status(200).json({
       accessToken,
       refreshToken,
@@ -97,6 +110,7 @@ router.post('/auth/login', async (req, res, next) => {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
+        profileId,
       },
     });
   } catch (err) {
@@ -132,6 +146,16 @@ router.post('/auth/refresh', (req, res, next) => {
     const payload = { sub: user.id, email: user.email, role: user.role };
     const newAccessToken = signAccessToken(payload);
     const newRefreshToken = signRefreshToken(payload);
+
+    let profileId = null;
+    if (user.role === 'owner') {
+      const ownerRecord = [...store.owners.values()].find(o => o.userId === user.id);
+      profileId = ownerRecord ? ownerRecord.id : null;
+    } else if (user.role === 'walker') {
+      const walkerRecord = [...store.walkers.values()].find(w => w.userId === user.id);
+      profileId = walkerRecord ? walkerRecord.id : null;
+    }
+
     res.status(200).json({
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
@@ -142,6 +166,7 @@ router.post('/auth/refresh', (req, res, next) => {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
+        profileId,
       },
     });
   } catch (err) {
