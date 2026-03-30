@@ -1,0 +1,1279 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://datagriff.github.io/dog-walking/specifications/prd/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../domain-model/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Product Requirements - Stardogwalker Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#product-requirements-document-stardogwalker" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Stardogwalker Docs" class="md-header__button md-logo" aria-label="Stardogwalker Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Stardogwalker Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Product Requirements
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dataGriff/dog-walking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dataGriff/dog-walking
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Specifications
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Stardogwalker Docs" class="md-nav__button md-logo" aria-label="Stardogwalker Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Stardogwalker Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dataGriff/dog-walking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dataGriff/dog-walking
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specifications
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Specifications
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Requirements
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-problem-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Problem Statement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-user-personas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. User Personas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. User Personas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#persona-1-the-prospective-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persona 1 – The Prospective Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persona-2-the-dog-walker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persona 2 – The Dog Walker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persona-3-the-dog-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persona 3 – The Dog Owner
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-functional-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Functional Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Functional Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discoverability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discoverability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#owner-and-dog-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Owner and Dog Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walker-and-rate-card-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walker and Rate Card Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walk-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk Requests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walk-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoicing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invoicing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recurring-walks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring Walks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-channel-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Channel Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-non-functional-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Non-Functional Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../domain-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-matrix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth Matrix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-problem-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Problem Statement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-user-personas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. User Personas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. User Personas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#persona-1-the-prospective-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persona 1 – The Prospective Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persona-2-the-dog-walker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persona 2 – The Dog Walker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persona-3-the-dog-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persona 3 – The Dog Owner
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-functional-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Functional Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Functional Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discoverability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discoverability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#owner-and-dog-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Owner and Dog Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walker-and-rate-card-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walker and Rate Card Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walk-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk Requests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walk-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoicing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invoicing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recurring-walks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring Walks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-channel-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Channel Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-non-functional-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Non-Functional Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="product-requirements-document-stardogwalker">Product Requirements Document – Stardogwalker<a class="headerlink" href="#product-requirements-document-stardogwalker" title="Permanent link">&para;</a></h1>
+<p><strong>Business:</strong> Stardogwalker – Cardiff, South Wales<br />
+<strong>Last updated:</strong> March 2026<br />
+<strong>Status:</strong> Living document</p>
+<p>This document describes the problems being solved, the people affected, and
+the capabilities the product must have. It does not prescribe implementation
+order or technical approach.</p>
+<hr />
+<h2 id="1-problem-statement">1. Problem Statement<a class="headerlink" href="#1-problem-statement" title="Permanent link">&para;</a></h2>
+<p>Stardogwalker is a sole-trader dog walking business operating in Cardiff,
+South Wales. Today the business is run entirely through informal channels —
+WhatsApp messages, phone calls, and cash payments. This creates a number of
+real daily frictions:</p>
+<ul>
+<li>Walk bookings get lost or forgotten in chat threads</li>
+<li>There is no single place to record which dogs are being walked, when, and for how long</li>
+<li>Dog medical and behavioural information is held in the walker's memory or scattered notes, creating a safety risk</li>
+<li>Invoicing is done manually and tracking outstanding payments is difficult</li>
+<li>Dog owners have no visibility of their dog during a walk</li>
+</ul>
+<p>There is also no way for potential new clients to discover or contact the business online — all new clients come through word of mouth or personal referral.</p>
+<p>The goal of this product is to replace informal coordination with a simple, professional platform purpose-built for Stardogwalker, and to make the business publicly discoverable so potential clients can find and register their interest online. The platform must support multiple interaction channels — web, mobile, chat, and agentic AI — from the same backend, without duplication of business logic.</p>
+<hr />
+<h2 id="2-goals">2. Goals<a class="headerlink" href="#2-goals" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Measure of success</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Make the business discoverable online</td>
+<td>Public marketing site indexed by search engines at launch</td>
+</tr>
+<tr>
+<td>Build a client backlog</td>
+<td>Interest requests captured in the app rather than via WhatsApp</td>
+</tr>
+<tr>
+<td>Eliminate missed or double-booked walks</td>
+<td>Zero scheduling conflicts after launch</td>
+</tr>
+<tr>
+<td>Give dog owners peace of mind during walks</td>
+<td>Owners receive at least one photo or note per walk</td>
+</tr>
+<tr>
+<td>Remove manual invoicing effort</td>
+<td>All invoices created and tracked in the app</td>
+</tr>
+<tr>
+<td>Maintain a safe central record of dog information</td>
+<td>All active client dogs have a complete profile in the app</td>
+</tr>
+<tr>
+<td>Professional client experience</td>
+<td>Clients able to self-serve bookings without WhatsApp</td>
+</tr>
+<tr>
+<td>Multi-channel reach</td>
+<td>Same API serves web, mobile, chat, and agentic clients without backend changes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-user-personas">3. User Personas<a class="headerlink" href="#3-user-personas" title="Permanent link">&para;</a></h2>
+<h3 id="persona-1-the-prospective-client">Persona 1 – The Prospective Client<a class="headerlink" href="#persona-1-the-prospective-client" title="Permanent link">&para;</a></h3>
+<p><strong>Who:</strong> Member of the public in Cardiff, South Wales searching for a dog walker.</p>
+<p><strong>Needs:</strong>
+- Find a professional online presence when searching locally
+- Learn about services, walk types, and the walker
+- Register interest without making a phone call
+- Receive a response and, if accepted, become a client automatically</p>
+<hr />
+<h3 id="persona-2-the-dog-walker">Persona 2 – The Dog Walker<a class="headerlink" href="#persona-2-the-dog-walker" title="Permanent link">&para;</a></h3>
+<p><strong>Who:</strong> The sole trader running Stardogwalker, Cardiff, South Wales.</p>
+<p><strong>Needs:</strong>
+- See a clear daily schedule without managing a chat thread
+- Access dog medical, behaviour, and access notes instantly before a walk
+- Record walk activity (photos, notes, distance) from a mobile device during a walk
+- Create and send invoices quickly at the end of each period
+- Track which invoices are outstanding</p>
+<hr />
+<h3 id="persona-3-the-dog-owner">Persona 3 – The Dog Owner<a class="headerlink" href="#persona-3-the-dog-owner" title="Permanent link">&para;</a></h3>
+<p><strong>Who:</strong> Registered client in Cardiff, South Wales.</p>
+<p><strong>Needs:</strong>
+- Submit and track walk bookings without WhatsApp
+- See live updates and photos during their dog's walk
+- View invoices and record payment in one place</p>
+<hr />
+<h2 id="4-functional-requirements">4. Functional Requirements<a class="headerlink" href="#4-functional-requirements" title="Permanent link">&para;</a></h2>
+<p>The product must provide the following capabilities.</p>
+<h3 id="discoverability">Discoverability<a class="headerlink" href="#discoverability" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A public-facing marketing site, indexable by search engines, that describes Stardogwalker's services, walk types, and how to get in touch</li>
+<li>A public interest registration form requiring no account, capturing name, email, phone number, postcode, and a description of the dog(s)</li>
+<li>A walker-only backlog of submitted interest requests, with the ability to accept or decline each one with an optional reason</li>
+<li>When the walker accepts an interest request, the prospective client is automatically registered as a dog owner and receives an invitation to set up their account</li>
+</ul>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Users can register, log in, and log out</li>
+<li>Sessions can be extended without re-entering credentials</li>
+<li>Roles: dog owner, dog walker</li>
+</ul>
+<h3 id="owner-and-dog-management">Owner and Dog Management<a class="headerlink" href="#owner-and-dog-management" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Dog owners can create and manage their own profile</li>
+<li>Dog owners can create and manage profiles for each of their dogs, including breed, date of birth, medical notes, behaviour notes, and vet contact details</li>
+<li>The walker can view dog profiles for any dog on an assigned walk</li>
+</ul>
+<h3 id="walker-and-rate-card-management">Walker and Rate Card Management<a class="headerlink" href="#walker-and-rate-card-management" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The walker can create and manage her profile</li>
+<li>The walker can define a rate card specifying a price per walk type, number of dogs, and duration</li>
+<li>The system resolves the agreed rate automatically when a walk is accepted; if no matching rate exists, the acceptance is blocked with a clear message</li>
+</ul>
+<h3 id="walk-requests">Walk Requests<a class="headerlink" href="#walk-requests" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Dog owners can submit a walk request specifying date, time, duration, walk type, and which dogs to include</li>
+<li>Dog owners can cancel a pending request</li>
+<li>Dog owners can view the status of their requests</li>
+<li>The walker can view all pending requests and accept or decline each one</li>
+<li>When a request is accepted, a scheduled walk is created with the agreed rate applied</li>
+<li>Owners are notified when their request is accepted or declined</li>
+</ul>
+<h3 id="walk-execution">Walk Execution<a class="headerlink" href="#walk-execution" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The walker can mark a walk as started and as completed, recording end time, distance, and summary notes</li>
+<li>The walker can cancel a scheduled walk with a reason</li>
+<li>Dog owners can cancel a scheduled walk before it has started</li>
+<li>The walker can post photo and text updates during a walk</li>
+<li>Dog owners can view updates and the walk summary at any time</li>
+</ul>
+<h3 id="invoicing">Invoicing<a class="headerlink" href="#invoicing" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The walker can create invoices covering one or more completed walks</li>
+<li>The walker can send an invoice to the relevant dog owner</li>
+<li>Dog owners can view their invoices and record payment</li>
+<li>The walker can see which invoices are outstanding</li>
+<li>Invoices past their due date are automatically flagged as overdue</li>
+<li>Dog owners can pay invoices online without a manual bank transfer</li>
+</ul>
+<h3 id="recurring-walks">Recurring Walks<a class="headerlink" href="#recurring-walks" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Dog owners can set up a recurring walk schedule so they do not need to rebook manually each week</li>
+</ul>
+<hr />
+<h2 id="5-channel-strategy">5. Channel Strategy<a class="headerlink" href="#5-channel-strategy" title="Permanent link">&para;</a></h2>
+<p>The platform serves multiple interaction channels from a single backend. All
+business logic is centralised; no channel re-implements it.</p>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web app (browser, mobile-responsive)</td>
+<td>Primary launch channel</td>
+</tr>
+<tr>
+<td>Native mobile app (iOS / Android)</td>
+<td>Second channel; no backend changes required</td>
+</tr>
+<tr>
+<td>Email notifications</td>
+<td>Triggered by domain events</td>
+</tr>
+<tr>
+<td>Chat interface (WhatsApp / SMS bot)</td>
+<td>Natural language over the same backend</td>
+</tr>
+<tr>
+<td>Agentic app (AI agent / LLM tool use)</td>
+<td>Programmatic access over the same backend</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-non-functional-requirements">6. Non-Functional Requirements<a class="headerlink" href="#6-non-functional-requirements" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Availability</strong></td>
+<td>99.5% uptime during business hours (07:00–20:00 GMT)</td>
+</tr>
+<tr>
+<td><strong>Response time</strong></td>
+<td>All responses returned within 500ms under normal load</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>All endpoints authenticated; HTTPS only; passwords stored with a strong one-way hash; OWASP Top 10 mitigations applied</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>All data stored in UK data centres (GDPR compliance)</td>
+</tr>
+<tr>
+<td><strong>Photo storage</strong></td>
+<td>Walk update photos stored separately from the main database</td>
+</tr>
+<tr>
+<td><strong>Mobile-friendly</strong></td>
+<td>Web app fully usable on a mobile phone without a native app install</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

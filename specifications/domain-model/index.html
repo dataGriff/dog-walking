@@ -1,0 +1,2638 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://datagriff.github.io/dog-walking/specifications/domain-model/">
+      
+      
+        <link rel="prev" href="../prd/">
+      
+      
+        <link rel="next" href="../auth-matrix/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Domain Model - Stardogwalker Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stardogwalker-domain-model" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Stardogwalker Docs" class="md-header__button md-logo" aria-label="Stardogwalker Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Stardogwalker Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Domain Model
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dataGriff/dog-walking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dataGriff/dog-walking
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../prd/" class="md-tabs__link">
+          
+  
+  
+  Specifications
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Stardogwalker Docs" class="md-nav__button md-logo" aria-label="Stardogwalker Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Stardogwalker Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dataGriff/dog-walking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dataGriff/dog-walking
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specifications
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Specifications
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain Model
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#entities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Entities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#owner-dog-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Owner (Dog Owner)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walker-dog-walker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walker (Dog Walker)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walkrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkRequest
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WalkRequest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#walkrequest-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkRequest status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Walk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#walk-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walkupdate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkUpdate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invoice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Invoice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invoice-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invoice status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoicelineitem-value-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InvoiceLineItem (value object)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interestrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InterestRequest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walktype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WalkType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interestrequest-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InterestRequest status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recurringwalk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecurringWalk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RecurringWalk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recurringwalk-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecurringWalk status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walkrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkRate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recurrenceschedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecurrenceSchedule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Address
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vaccination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vaccination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetcontact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VetContact
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entity-relationship-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entity Relationship Diagram
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregate-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregate Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Business Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-matrix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth Matrix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#entities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Entities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#owner-dog-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Owner (Dog Owner)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walker-dog-walker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walker (Dog Walker)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walkrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkRequest
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WalkRequest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#walkrequest-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkRequest status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Walk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#walk-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Walk status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walkupdate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkUpdate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invoice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Invoice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invoice-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invoice status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoicelineitem-value-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InvoiceLineItem (value object)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interestrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InterestRequest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walktype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WalkType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interestrequest-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InterestRequest status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recurringwalk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecurringWalk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RecurringWalk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recurringwalk-status-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecurringWalk status lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walkrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WalkRate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recurrenceschedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecurrenceSchedule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Address
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vaccination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vaccination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetcontact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VetContact
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entity-relationship-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entity Relationship Diagram
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregate-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregate Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Business Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="stardogwalker-domain-model">Stardogwalker – Domain Model<a class="headerlink" href="#stardogwalker-domain-model" title="Permanent link">&para;</a></h1>
+<p>This document describes the core entities, their attributes, relationships,
+and the business rules that govern the Stardogwalker domain.</p>
+<hr />
+<h2 id="entities">Entities<a class="headerlink" href="#entities" title="Permanent link">&para;</a></h2>
+<h3 id="user">User<a class="headerlink" href="#user" title="Permanent link">&para;</a></h3>
+<p>Represents a registered user of the platform. A user has one of two roles:
+<strong>owner</strong> or <strong>walker</strong>. Authentication is JWT-based.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned identifier</td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>✓</td>
+<td>Unique; used to log in</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>✓</td>
+<td>Minimum 8 characters (hashed)</td>
+</tr>
+<tr>
+<td>firstName</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>lastName</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>role</td>
+<td>enum</td>
+<td>✓</td>
+<td><code>owner</code> or <code>walker</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note on profile data:</strong> <code>User</code> holds authentication credentials only.
+<code>Owner</code> and <code>Walker</code> profiles are the canonical source for display data
+(name, phone, address). <code>User.email</code> and <code>Owner.email</code> / <code>Walker.email</code>
+should match and be kept in sync; the profile email is used for
+communication while the User email is used for login.</p>
+</blockquote>
+<hr />
+<h3 id="owner-dog-owner">Owner (Dog Owner)<a class="headerlink" href="#owner-dog-owner" title="Permanent link">&para;</a></h3>
+<p>A dog owner who uses the platform to book walks for their dogs. Linked 1-to-1
+with a <strong>User</strong> account.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>firstName</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>lastName</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>phone</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>address</td>
+<td>Address</td>
+<td>✗</td>
+<td>Embedded value object (see below)</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>✗</td>
+<td>General notes (e.g. access codes)</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="walker-dog-walker">Walker (Dog Walker)<a class="headerlink" href="#walker-dog-walker" title="Permanent link">&para;</a></h3>
+<p>A dog walker who accepts walk requests and carries out walks. Linked 1-to-1
+with a <strong>User</strong> account.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>firstName</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>lastName</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>phone</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>address</td>
+<td>Address</td>
+<td>✗</td>
+<td>Embedded value object</td>
+</tr>
+<tr>
+<td>bio</td>
+<td>string</td>
+<td>✗</td>
+<td>Short biography for owners to read</td>
+</tr>
+<tr>
+<td>walkRates</td>
+<td>WalkRate[]</td>
+<td>✗</td>
+<td>Rate card; see <strong>WalkRate</strong> value object below</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="dog">Dog<a class="headerlink" href="#dog" title="Permanent link">&para;</a></h3>
+<p>A dog belonging to an <strong>Owner</strong>. One owner may have many dogs.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>ownerId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Owner</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>breed</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>dateOfBirth</td>
+<td>date</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>sex</td>
+<td>enum</td>
+<td>✗</td>
+<td><code>male</code> or <code>female</code></td>
+</tr>
+<tr>
+<td>colour</td>
+<td>string</td>
+<td>✗</td>
+<td></td>
+</tr>
+<tr>
+<td>microchipNumber</td>
+<td>string</td>
+<td>✗</td>
+<td>ISO 11784/11785 identifier</td>
+</tr>
+<tr>
+<td>vaccinations</td>
+<td>Vaccination[]</td>
+<td>✗</td>
+<td>List of vaccination records</td>
+</tr>
+<tr>
+<td>vetContact</td>
+<td>VetContact</td>
+<td>✗</td>
+<td>Embedded value object</td>
+</tr>
+<tr>
+<td>medicalNotes</td>
+<td>string</td>
+<td>✗</td>
+<td>Conditions, medications, allergies</td>
+</tr>
+<tr>
+<td>behaviourNotes</td>
+<td>string</td>
+<td>✗</td>
+<td>Temperament notes useful for walkers</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="walkrequest">WalkRequest<a class="headerlink" href="#walkrequest" title="Permanent link">&para;</a></h3>
+<p>A request submitted by an <strong>Owner</strong> asking for a walk for one or more of their
+<strong>Dogs</strong>. This is the entry point to the walk booking workflow. A request may
+optionally nominate a preferred <strong>Walker</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>ownerId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Owner</td>
+</tr>
+<tr>
+<td>dogIds</td>
+<td>UUID[]</td>
+<td>✓</td>
+<td>FK[] → Dog (≥1 dog per request)</td>
+</tr>
+<tr>
+<td>preferredWalkerId</td>
+<td>UUID</td>
+<td>✗</td>
+<td>FK → Walker; optional preference</td>
+</tr>
+<tr>
+<td>requestedDate</td>
+<td>date</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>requestedStartTime</td>
+<td>time</td>
+<td>✓</td>
+<td>RFC 3339 time (<code>HH:MM:SSZ</code>)</td>
+</tr>
+<tr>
+<td>durationMinutes</td>
+<td>integer</td>
+<td>✓</td>
+<td>15–240 minutes</td>
+</tr>
+<tr>
+<td>walkType</td>
+<td>enum</td>
+<td>✓</td>
+<td>See <strong>WalkType</strong> enum below</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>✗</td>
+<td>Special instructions for the walker</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>✓</td>
+<td>See <strong>WalkRequest status lifecycle</strong> below</td>
+</tr>
+<tr>
+<td>declineReason</td>
+<td>string</td>
+<td>✗</td>
+<td>Populated when status = <code>declined</code></td>
+</tr>
+<tr>
+<td>walkId</td>
+<td>UUID</td>
+<td>✗</td>
+<td>FK → Walk; set when request is accepted</td>
+</tr>
+<tr>
+<td>recurringWalkId</td>
+<td>UUID</td>
+<td>✗</td>
+<td>FK → RecurringWalk; set when generated from a recurring schedule</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<h4 id="walkrequest-status-lifecycle">WalkRequest status lifecycle<a class="headerlink" href="#walkrequest-status-lifecycle" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>pending ──► accepted ──► (Walk is created)
+        │
+        └──► declined
+        │
+        └──► cancelled
+</code></pre></div>
+<hr />
+<h3 id="walk">Walk<a class="headerlink" href="#walk" title="Permanent link">&para;</a></h3>
+<p>A scheduled (or completed/cancelled) walk. Created automatically when a
+<strong>Walker</strong> accepts a <strong>WalkRequest</strong>. A walk belongs to exactly one <strong>Owner</strong>,
+one <strong>Walker</strong>, and one or more <strong>Dogs</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>requestId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → WalkRequest</td>
+</tr>
+<tr>
+<td>ownerId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Owner</td>
+</tr>
+<tr>
+<td>walkerId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Walker</td>
+</tr>
+<tr>
+<td>dogIds</td>
+<td>UUID[]</td>
+<td>✓</td>
+<td>FK[] → Dog</td>
+</tr>
+<tr>
+<td>scheduledDate</td>
+<td>date</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>scheduledStartTime</td>
+<td>time</td>
+<td>✓</td>
+<td>RFC 3339 time (<code>HH:MM:SSZ</code>)</td>
+</tr>
+<tr>
+<td>durationMinutes</td>
+<td>integer</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>walkType</td>
+<td>enum</td>
+<td>✓</td>
+<td>Copied from the originating WalkRequest</td>
+</tr>
+<tr>
+<td>agreedRate</td>
+<td>decimal</td>
+<td>✓</td>
+<td>Hourly rate in GBP resolved from walker's WalkRate card; total walk cost is derived at invoicing time</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>✓</td>
+<td>See <strong>Walk status lifecycle</strong> below</td>
+</tr>
+<tr>
+<td>routeNotes</td>
+<td>string</td>
+<td>✗</td>
+<td>Planned route description</td>
+</tr>
+<tr>
+<td>actualStartTime</td>
+<td>datetime</td>
+<td>✗</td>
+<td>Populated when walk is started</td>
+</tr>
+<tr>
+<td>actualEndTime</td>
+<td>datetime</td>
+<td>✗</td>
+<td>Populated on completion</td>
+</tr>
+<tr>
+<td>distanceKm</td>
+<td>decimal</td>
+<td>✗</td>
+<td>Populated on completion</td>
+</tr>
+<tr>
+<td>summaryNotes</td>
+<td>string</td>
+<td>✗</td>
+<td>Walker's post-walk summary</td>
+</tr>
+<tr>
+<td>cancelReason</td>
+<td>string</td>
+<td>✗</td>
+<td>Populated when status = <code>cancelled</code></td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<h4 id="walk-status-lifecycle">Walk status lifecycle<a class="headerlink" href="#walk-status-lifecycle" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>scheduled ──► in_progress ──► completed
+          │
+          └──────────────────► cancelled
+</code></pre></div>
+<hr />
+<h3 id="walkupdate">WalkUpdate<a class="headerlink" href="#walkupdate" title="Permanent link">&para;</a></h3>
+<p>A real-time update posted by a <strong>Walker</strong> during a walk. Supports two types:
+a text <strong>note</strong> or a photo <strong>image</strong>. An unlimited number of updates can be
+posted per walk.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>walkId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Walk</td>
+</tr>
+<tr>
+<td>type</td>
+<td>enum</td>
+<td>✓</td>
+<td><code>note</code> or <code>image</code></td>
+</tr>
+<tr>
+<td>note</td>
+<td>string</td>
+<td>✗</td>
+<td>Required when <code>type = note</code></td>
+</tr>
+<tr>
+<td>imageUrl</td>
+<td>string</td>
+<td>✗</td>
+<td>URL of stored image; required when <code>type = image</code></td>
+</tr>
+<tr>
+<td>imageCaption</td>
+<td>string</td>
+<td>✗</td>
+<td>Optional caption for an image update</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="invoice">Invoice<a class="headerlink" href="#invoice" title="Permanent link">&para;</a></h3>
+<p>An invoice raised by a <strong>Walker</strong> against an <strong>Owner</strong> for one or more
+completed <strong>Walks</strong>. Each walk appears as a line item.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>invoiceNumber</td>
+<td>string</td>
+<td>✗</td>
+<td>Human-readable reference (e.g. INV-2025-42)</td>
+</tr>
+<tr>
+<td>ownerId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Owner</td>
+</tr>
+<tr>
+<td>walkerId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Walker</td>
+</tr>
+<tr>
+<td>lineItems</td>
+<td>InvoiceLineItem[]</td>
+<td>✓</td>
+<td>≥1 line item; each linked to a Walk</td>
+</tr>
+<tr>
+<td>subtotal</td>
+<td>decimal</td>
+<td>✓</td>
+<td>Sum of all line item totals</td>
+</tr>
+<tr>
+<td>taxRate</td>
+<td>decimal</td>
+<td>✗</td>
+<td>Percentage; defaults to 0</td>
+</tr>
+<tr>
+<td>taxAmount</td>
+<td>decimal</td>
+<td>✓</td>
+<td>Calculated from subtotal × taxRate</td>
+</tr>
+<tr>
+<td>total</td>
+<td>decimal</td>
+<td>✓</td>
+<td>subtotal + taxAmount</td>
+</tr>
+<tr>
+<td>dueDate</td>
+<td>date</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>✓</td>
+<td>See <strong>Invoice status lifecycle</strong> below</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>✗</td>
+<td>Free-text notes on the invoice</td>
+</tr>
+<tr>
+<td>paidAt</td>
+<td>datetime</td>
+<td>✗</td>
+<td>Populated when status = <code>paid</code></td>
+</tr>
+<tr>
+<td>paymentMethod</td>
+<td>enum</td>
+<td>✗</td>
+<td><code>bank_transfer</code>, <code>card</code>, <code>cash</code>, <code>other</code></td>
+</tr>
+<tr>
+<td>paymentReference</td>
+<td>string</td>
+<td>✗</td>
+<td>Transaction ID or reference</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<h4 id="invoice-status-lifecycle">Invoice status lifecycle<a class="headerlink" href="#invoice-status-lifecycle" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>draft ──► sent ──► paid
+      │       │
+      │       └──► overdue
+      │
+      └──► cancelled
+</code></pre></div>
+<hr />
+<h3 id="invoicelineitem-value-object">InvoiceLineItem (value object)<a class="headerlink" href="#invoicelineitem-value-object" title="Permanent link">&para;</a></h3>
+<p>An individual line on an <strong>Invoice</strong>, representing one completed walk.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>walkId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Walk</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>✓</td>
+<td>Human-readable line description</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>decimal</td>
+<td>✓</td>
+<td>E.g. hours walked</td>
+</tr>
+<tr>
+<td>unitPrice</td>
+<td>decimal</td>
+<td>✓</td>
+<td>Walker's rate per unit in GBP</td>
+</tr>
+<tr>
+<td>total</td>
+<td>decimal</td>
+<td>✓</td>
+<td>Calculated: quantity × unitPrice</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="interestrequest">InterestRequest<a class="headerlink" href="#interestrequest" title="Permanent link">&para;</a></h3>
+<p>Value objects are embedded within entities and have no independent identity.</p>
+<h3 id="walktype">WalkType<a class="headerlink" href="#walktype" title="Permanent link">&para;</a></h3>
+<p>An enumeration of the available walk formats offered by the platform.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>solo_walk</code></td>
+<td>One-on-one walk with a single dog</td>
+</tr>
+<tr>
+<td><code>group_walk</code></td>
+<td>Walk shared with dogs from other owners</td>
+</tr>
+<tr>
+<td><code>adventure_walk</code></td>
+<td>Extended off-lead walk in parks or countryside</td>
+</tr>
+<tr>
+<td><code>puppy_walk</code></td>
+<td>Short, structured walk designed for young dogs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>A public enquiry submitted by a prospective client before they have an
+account. Managed by the walker as a backlog. Accepted requests automatically
+create a <strong>User</strong> and <strong>Owner</strong> profile.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>firstName</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>lastName</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>✓</td>
+<td>Must be unique across existing User records</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>string</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td>postcode</td>
+<td>string</td>
+<td>✓</td>
+<td>Must be within the Cardiff / South Wales service area</td>
+</tr>
+<tr>
+<td>dogDescription</td>
+<td>string</td>
+<td>✓</td>
+<td>Free-text description of the dog(s)</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>✗</td>
+<td>Internal walker notes; never visible to the prospect</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>✓</td>
+<td>See <strong>InterestRequest status lifecycle</strong> below</td>
+</tr>
+<tr>
+<td>declineReason</td>
+<td>string</td>
+<td>✗</td>
+<td>Populated when status = <code>declined</code></td>
+</tr>
+<tr>
+<td>ownerId</td>
+<td>UUID</td>
+<td>✗</td>
+<td>FK → Owner; set when status transitions to <code>accepted</code></td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<h4 id="interestrequest-status-lifecycle">InterestRequest status lifecycle<a class="headerlink" href="#interestrequest-status-lifecycle" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>pending ──► accepted (Owner account created)
+        │
+        └──► declined
+</code></pre></div>
+<hr />
+<h3 id="recurringwalk">RecurringWalk<a class="headerlink" href="#recurringwalk" title="Permanent link">&para;</a></h3>
+<p>A recurring walk schedule set up by an <strong>Owner</strong>. The system generates a new
+<strong>WalkRequest</strong> automatically on each scheduled occurrence. The walker accepts
+or declines each generated request through the standard walk booking flow.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>UUID</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>ownerId</td>
+<td>UUID</td>
+<td>✓</td>
+<td>FK → Owner</td>
+</tr>
+<tr>
+<td>dogIds</td>
+<td>UUID[]</td>
+<td>✓</td>
+<td>FK[] → Dog; same dogs walked on every occurrence</td>
+</tr>
+<tr>
+<td>walkType</td>
+<td>enum</td>
+<td>✓</td>
+<td>See <strong>WalkType</strong> enum</td>
+</tr>
+<tr>
+<td>durationMinutes</td>
+<td>integer</td>
+<td>✓</td>
+<td>15–240 minutes</td>
+</tr>
+<tr>
+<td>recurrence</td>
+<td>RecurrenceSchedule</td>
+<td>✓</td>
+<td>See <strong>RecurrenceSchedule</strong> value object below</td>
+</tr>
+<tr>
+<td>preferredWalkerId</td>
+<td>UUID</td>
+<td>✗</td>
+<td>FK → Walker; optional preferred walker for every generated request</td>
+</tr>
+<tr>
+<td>startDate</td>
+<td>date</td>
+<td>✓</td>
+<td>Date of the first generated WalkRequest</td>
+</tr>
+<tr>
+<td>endDate</td>
+<td>date</td>
+<td>✗</td>
+<td>If omitted, schedule continues until paused or cancelled</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>✗</td>
+<td>Standing instructions for every walk in this schedule</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>✓</td>
+<td>See <strong>RecurringWalk status lifecycle</strong> below</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>datetime</td>
+<td>✓</td>
+<td>System-assigned</td>
+</tr>
+</tbody>
+</table>
+<h4 id="recurringwalk-status-lifecycle">RecurringWalk status lifecycle<a class="headerlink" href="#recurringwalk-status-lifecycle" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>active ──► paused ──► active
+       │
+       └──► cancelled
+</code></pre></div>
+<hr />
+<h3 id="walkrate">WalkRate<a class="headerlink" href="#walkrate" title="Permanent link">&para;</a></h3>
+<p>A single pricing entry in a walker's rate card. The applicable rate for a
+walk is determined by matching the walk's <strong>walkType</strong>, the <strong>number of dogs</strong>,
+and the <strong>durationMinutes</strong> to an entry in the walker's <code>walkRates</code> list.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>walkType</td>
+<td>enum</td>
+<td>✓</td>
+<td>The walk format this rate applies to</td>
+</tr>
+<tr>
+<td>numberOfDogs</td>
+<td>integer</td>
+<td>✓</td>
+<td>Number of dogs this rate applies to (≥ 1)</td>
+</tr>
+<tr>
+<td>durationMinutes</td>
+<td>integer</td>
+<td>✓</td>
+<td>Walk duration this rate applies to (15–240 min)</td>
+</tr>
+<tr>
+<td>ratePerHour</td>
+<td>decimal</td>
+<td>✓</td>
+<td>Hourly rate in GBP for this combination</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="recurrenceschedule">RecurrenceSchedule<a class="headerlink" href="#recurrenceschedule" title="Permanent link">&para;</a></h3>
+<p>Embedded in <strong>RecurringWalk</strong>. Defines the cadence of walk generation.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>frequency</td>
+<td>enum</td>
+<td>✓</td>
+<td><code>weekly</code> or <code>fortnightly</code></td>
+</tr>
+<tr>
+<td>dayOfWeek</td>
+<td>enum</td>
+<td>✓</td>
+<td><code>monday</code> … <code>sunday</code></td>
+</tr>
+<tr>
+<td>startTime</td>
+<td>time</td>
+<td>✓</td>
+<td>RFC 3339 time (<code>HH:MM:SSZ</code>); applied to every generated request</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="address">Address<a class="headerlink" href="#address" title="Permanent link">&para;</a></h3>
+<p>Used by <strong>Owner</strong> and <strong>Walker</strong> (and <strong>VetContact</strong>).</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>line1</td>
+<td>string</td>
+</tr>
+<tr>
+<td>line2</td>
+<td>string</td>
+</tr>
+<tr>
+<td>city</td>
+<td>string</td>
+</tr>
+<tr>
+<td>postcode</td>
+<td>string</td>
+</tr>
+<tr>
+<td>country</td>
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vaccination">Vaccination<a class="headerlink" href="#vaccination" title="Permanent link">&para;</a></h3>
+<p>Embedded in <strong>Dog</strong> as a list.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>dateAdministered</td>
+<td>date</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>nextDueDate</td>
+<td>date</td>
+<td>✗</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vetcontact">VetContact<a class="headerlink" href="#vetcontact" title="Permanent link">&para;</a></h3>
+<p>Embedded in <strong>Dog</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>string</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Address</td>
+<td>✗</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="entity-relationship-diagram">Entity Relationship Diagram<a class="headerlink" href="#entity-relationship-diagram" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>┌──────────────────────┐
+│  InterestRequest      │
+│  (public / no auth)   │
+└──────────┬───────────┘
+           │ accepted (auto-creates)
+           ▼
+┌──────────┐          ┌──────────┐
+│   User   │          │   User   │
+│ (owner)  │          │ (walker) │
+└────┬─────┘          └────┬─────┘
+     │ 1                   │ 1
+     │                     │
+     ▼ 1                   ▼ 1
+┌──────────┐          ┌──────────┐
+│  Owner   │          │  Walker  │
+└────┬─────┘          └────┬─────┘
+     │ 1                   │ 1
+     │                     │
+     ├─── 1..* ──────────► │
+     │    WalkRequest       │
+     │    (preferred        │
+     │     walker, opt.)    │
+     │                     │
+     │  (generates)         │
+     │ 1                   │
+  ┌──┴────────────┐         │
+  │ RecurringWalk │         │
+  └──────────────-┘         │
+     │ 1                   │
+     ▼ *                   │
+┌──────────┐               │
+│   Dog    │               │
+└────┬─────┘               │
+     │ *                   │ *
+     │                     │
+     └──────── * ──────────┘
+                Walk
+                │ 1
+                │
+                ▼ *
+          ┌────────────┐
+          │ WalkUpdate │
+          │(note/image)│
+          └────────────┘
+
+Owner ──── 1 ──► * ──── Invoice ──── * ──► 1 ──── Walker
+                             │
+                             │ 1..* line items
+                             ▼
+                         Walk (completed)
+</code></pre></div>
+<hr />
+<h2 id="aggregate-boundaries">Aggregate Boundaries<a class="headerlink" href="#aggregate-boundaries" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Aggregate Root</th>
+<th>Contains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>InterestRequest</td>
+<td>Interest enquiry and internal notes</td>
+</tr>
+<tr>
+<td>Owner</td>
+<td>Owner profile, Address</td>
+</tr>
+<tr>
+<td>Walker</td>
+<td>Walker profile, Address, WalkRate[]</td>
+</tr>
+<tr>
+<td>Dog</td>
+<td>Dog details, Vaccination[], VetContact</td>
+</tr>
+<tr>
+<td>WalkRequest</td>
+<td>Request details and status</td>
+</tr>
+<tr>
+<td>RecurringWalk</td>
+<td>Recurring schedule, RecurrenceSchedule</td>
+</tr>
+<tr>
+<td>Walk</td>
+<td>Walk schedule, status, WalkUpdate[]</td>
+</tr>
+<tr>
+<td>Invoice</td>
+<td>Invoice header, InvoiceLineItem[]</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-business-rules">Key Business Rules<a class="headerlink" href="#key-business-rules" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>One or more dogs per request</strong> – A <code>WalkRequest</code> must include at least one dog, and all dogs must belong to the requesting owner.</li>
+<li><strong>Walk created on acceptance</strong> – A <code>Walk</code> is only created when a <code>WalkRequest</code> transitions to <code>accepted</code>. Each request produces at most one walk.</li>
+<li><strong>Walk updates during active walks</strong> – <code>WalkUpdate</code> records (notes and images) are intended to be posted while a walk's status is <code>in_progress</code>.</li>
+<li><strong>Invoice per owner/walker pair</strong> – An invoice is raised by a walker against a specific owner and references one or more of their completed walks.</li>
+<li><strong>Line item totals</strong> – Each <code>InvoiceLineItem.total</code> is derived from <code>quantity × unitPrice</code>. The invoice <code>subtotal</code> is the sum of all line item totals; <code>total = subtotal + taxAmount</code>.</li>
+<li><strong>Preferred walker</strong> – An owner may nominate a preferred walker on a <code>WalkRequest</code>, but any available walker may accept an open request.</li>
+<li><strong>Walk duration limits</strong> – Walk duration must be between 15 and 240 minutes.</li>
+<li><strong>Password policy</strong> – Passwords must be at least 8 characters.</li>
+<li><strong>Rate resolution</strong> – When a walker accepts a <code>WalkRequest</code>, the system resolves the <code>agreedRate</code> by finding the walker's <code>WalkRate</code> entry that exactly matches the request's <code>walkType</code>, the number of dogs in <code>dogIds</code>, and the <code>durationMinutes</code>. All three dimensions must match; if no entry is found the acceptance is rejected with a pricing error.</li>
+<li><strong>Walk type required</strong> – Every <code>WalkRequest</code> must specify a <code>walkType</code> at submission time. Rate resolution against that walk type (see rule 9) is performed only at acceptance time, not at submission time.</li>
+<li><strong>Interest request is unauthenticated</strong> – <code>InterestRequest</code> submission requires no account. The email provided must be unique across existing <code>User</code> records to prevent duplicate accounts.</li>
+<li><strong>Account creation on acceptance</strong> – When a walker accepts an <code>InterestRequest</code>, the system atomically creates a <code>User</code> record and an <code>Owner</code> profile populated from the interest request data (firstName, lastName, email, phone). A system-generated invitation credential is issued to the new user. The <code>InterestRequest.ownerId</code> is set to the new Owner's id.</li>
+<li><strong>Interest postcode validation</strong> – The postcode submitted in an <code>InterestRequest</code> should fall within the Cardiff / South Wales service area. Requests outside the service area may be declined by the walker.</li>
+<li><strong>Recurring walk request generation</strong> – When a <code>RecurringWalk</code> is <code>active</code>, the system generates a <code>WalkRequest</code> for each upcoming occurrence based on the <code>RecurrenceSchedule</code>. Generated requests enter the standard booking flow (pending → accepted/declined). If a generated request is declined, the <code>RecurringWalk</code> continues and the next occurrence is still generated.</li>
+<li><strong>Recurring walk cancellation</strong> – Cancelling a <code>RecurringWalk</code> stops future request generation. Any already-generated <code>WalkRequest</code> records in <code>pending</code> status are cancelled automatically. Accepted walks are not affected.</li>
+<li><strong>Walk start required before updates</strong> – <code>WalkUpdate</code> records may only be posted once a walk's status is <code>in_progress</code>. The walker must start the walk (transition to <code>in_progress</code>) before posting photos or notes.</li>
+<li><strong>Scheduling conflict detection</strong> – When a walker accepts a <code>WalkRequest</code>, the system checks for overlapping walks already assigned to that walker on the same date. Two walks overlap if their time windows (scheduledStartTime to scheduledStartTime + durationMinutes) intersect. If a conflict is detected, the acceptance is rejected with a scheduling error. This ensures the PRD goal of zero scheduling conflicts.</li>
+<li><strong>Overdue invoice auto-flagging</strong> – An invoice in <code>sent</code> status whose <code>dueDate</code> has passed is automatically transitioned to <code>overdue</code>. This may be implemented as a background scheduler or evaluated on read. Once an overdue invoice is paid, it transitions directly to <code>paid</code>.</li>
+<li><strong>Preferred walker on recurring walks</strong> – A <code>RecurringWalk</code> may specify a <code>preferredWalkerId</code>. When the system generates <code>WalkRequest</code> records from the schedule, the preferred walker is carried forward to each generated request.</li>
+<li><strong>Recurring walk request linkage</strong> – Generated <code>WalkRequest</code> records include a <code>recurringWalkId</code> linking them back to the originating <code>RecurringWalk</code>. This is required for pause and cancel operations to identify and cancel pending generated requests.</li>
+</ol>
+<hr />
+<h2 id="implementation-notes">Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permanent link">&para;</a></h2>
+<p>The following areas are intentionally <strong>out of scope</strong> for V1 of the domain model but are acknowledged as future requirements from the PRD:</p>
+<ul>
+<li><strong>Online payment processing</strong> – The <code>POST /invoices/{id}/pay</code> endpoint records that a payment has occurred (method, reference, timestamp) but does not initiate a payment flow with an external provider (e.g. Stripe). Online payment integration is deferred to a future iteration.</li>
+<li><strong>Notification / event model</strong> – The PRD requires that owners are notified on key state transitions (request accepted/declined, walk started/completed, invoice sent). The mechanism (email, push, webhook) and the event catalogue are not defined here. A lightweight notification entity or event bus specification should be added before implementing notifications.</li>
+<li><strong>Marketing site content</strong> – The PRD requires a public-facing marketing site. Content for this site is managed outside the API; the API provides only the interest request submission endpoint as the integration point.</li>
+<li><strong>Audit trail</strong> – With multiple interaction channels (web, mobile, chat, agentic AI), an audit log recording which user and channel performed each state transition is recommended but not yet modelled.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
