@@ -240,8 +240,8 @@ async function cancelWalkRequest(id) {
   return request('POST', `/walk-requests/${id}/cancel`);
 }
 
-async function acceptWalkRequest(id) {
-  return request('POST', `/walk-requests/${id}/accept`);
+async function acceptWalkRequest(id, body) {
+  return request('POST', `/walk-requests/${id}/accept`, body);
 }
 
 async function declineWalkRequest(id, reason) {

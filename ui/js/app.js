@@ -54,6 +54,20 @@ function esc(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+const WALK_TYPE_LABELS = {
+  solo_walk: 'Solo Walk',
+  group_walk: 'Group Walk',
+  adventure_walk: 'Adventure Walk',
+  puppy_walk: 'Puppy Walk',
+};
+
+const WALK_REQUEST_STATUS_LABELS = {
+  pending: 'Pending',
+  accepted: 'Accepted',
+  declined: 'Declined',
+  cancelled: 'Cancelled',
+};
+
 function initials(first, last) {
   return `${(first || '?')[0]}${(last || '?')[0]}`.toUpperCase();
 }
@@ -648,9 +662,9 @@ async function loadOwnerWalkRequests() {
               ${items.map(r => `
               <tr>
                 <td>${fmt(r.requestedDate)}</td>
-                <td>${r.requestedTime || '—'}</td>
+                <td>${r.requestedStartTime ? r.requestedStartTime.slice(0,5) : '—'}</td>
                 <td>${r.durationMinutes ? r.durationMinutes + ' min' : '—'}</td>
-                <td>${esc(r.walkType || '—')}</td>
+                <td>${WALK_TYPE_LABELS[r.walkType] || esc(r.walkType || '—')}</td>
                 <td>${statusBadge(r.status)}</td>
                 <td>
                   ${r.status === 'pending' ? `<button class="btn btn-sm btn-outline-danger" onclick="cancelWalkReq('${r.id}')">Cancel</button>` : ''}
@@ -721,9 +735,10 @@ async function showNewWalkRequestModal() {
         <div class="col-sm-6">
           <label class="form-label">Walk type</label>
           <select class="form-select" name="walkType" required>
-            <option value="solo">Solo</option>
-            <option value="group">Group</option>
-            <option value="puppy_visit">Puppy Visit</option>
+            <option value="solo_walk">Solo Walk</option>
+            <option value="group_walk">Group Walk</option>
+            <option value="adventure_walk">Adventure Walk</option>
+            <option value="puppy_walk">Puppy Walk</option>
           </select>
         </div>
         <div class="col-12">
@@ -748,10 +763,13 @@ async function showNewWalkRequestModal() {
     btn.disabled = true;
     btn.textContent = 'Submitting…';
     try {
+      const requestedDate = fd.get('requestedDate');
+      const requestedTime = fd.get('requestedTime') || '09:00';
+      const requestedStartTime = `${requestedTime}:00Z`;
       await API.createWalkRequest({
         ownerId: user.profileId || user.id,
-        requestedDate: fd.get('requestedDate'),
-        requestedTime: fd.get('requestedTime'),
+        requestedDate,
+        requestedStartTime,
         durationMinutes: parseInt(fd.get('durationMinutes')),
         walkType: fd.get('walkType'),
         dogIds,
@@ -1148,9 +1166,10 @@ async function showNewRecurringModal() {
         <div class="col-sm-6">
           <label class="form-label">Walk type</label>
           <select class="form-select" name="walkType">
-            <option value="solo">Solo</option>
-            <option value="group">Group</option>
-            <option value="puppy_visit">Puppy Visit</option>
+            <option value="solo_walk">Solo Walk</option>
+            <option value="group_walk">Group Walk</option>
+            <option value="adventure_walk">Adventure Walk</option>
+            <option value="puppy_walk">Puppy Walk</option>
           </select>
         </div>
         <div class="col-12">
@@ -1313,9 +1332,9 @@ async function loadWalkerWalkRequests() {
               <tr>
                 <td>${esc(r.ownerName || r.ownerId || '—')}</td>
                 <td>${fmt(r.requestedDate)}</td>
-                <td>${r.requestedTime || '—'}</td>
+                <td>${r.requestedStartTime ? r.requestedStartTime.slice(0,5) : '—'}</td>
                 <td>${r.durationMinutes ? r.durationMinutes + ' min' : '—'}</td>
-                <td>${esc(r.walkType || '—')}</td>
+                <td>${WALK_TYPE_LABELS[r.walkType] || esc(r.walkType || '—')}</td>
                 <td>${statusBadge(r.status)}</td>
                 <td class="d-flex gap-1">
                   <button class="btn btn-sm btn-success" onclick="acceptWalkReq('${r.id}')">Accept</button>
@@ -1332,15 +1351,55 @@ async function loadWalkerWalkRequests() {
   }
 }
 
-window.acceptWalkReq = async (id) => {
-  if (!confirm('Accept this walk request? A walk will be scheduled.')) return;
-  try {
-    await API.acceptWalkRequest(id);
-    toast('Walk request accepted! Walk scheduled. 🦮', 'success');
-    await loadWalkerWalkRequests();
-  } catch (err) {
-    toast(err.message, 'error');
-  }
+window.acceptWalkReq = (id) => {
+  const user = currentUser();
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const defaultDate = tomorrow.toISOString().split('T')[0];
+
+  showModal('✅ Accept Walk Request', `
+    <form id="accept-walk-form">
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <label class="form-label">Confirmed date</label>
+          <input type="date" class="form-control" name="confirmedDate" value="${defaultDate}" required>
+        </div>
+        <div class="col-sm-6">
+          <label class="form-label">Confirmed start time</label>
+          <input type="time" class="form-control" name="confirmedStartTime" value="09:00" required>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Notes (optional)</label>
+          <textarea class="form-control" name="notes" rows="2" placeholder="Any notes for the owner…"></textarea>
+        </div>
+      </div>
+    </form>`,
+    `<button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+     <button class="btn btn-success" id="confirm-accept-btn">Accept Walk</button>`
+  );
+
+  document.getElementById('confirm-accept-btn').addEventListener('click', async () => {
+    const form = document.getElementById('accept-walk-form');
+    const fd = new FormData(form);
+    const btn = document.getElementById('confirm-accept-btn');
+    btn.disabled = true;
+    btn.textContent = 'Accepting…';
+    try {
+      await API.acceptWalkRequest(id, {
+        walkerId: user.profileId,
+        confirmedDate: fd.get('confirmedDate'),
+        confirmedStartTime: `${fd.get('confirmedStartTime')}:00Z`,
+        notes: fd.get('notes') || undefined,
+      });
+      hideModal();
+      toast('Walk request accepted! Walk scheduled. 🦮', 'success');
+      await loadWalkerWalkRequests();
+    } catch (err) {
+      toast(err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = 'Accept Walk';
+    }
+  });
 };
 
 window.declineWalkReq = async (id) => {
